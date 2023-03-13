@@ -1,29 +1,39 @@
 <!doctype html>
 <html>
     <head>
+        <link rel="stylesheet" href="css/style.css">
         <meta charset="utf-8">
             <title>Kim Luxembourger</title>
     </head>
     <body>
         <header>
-            <h1>Kim Luxembourger</h1>
+            <h1 id="titleheader">Kim Luxembourger</h1>
+            <div class="imgbox" id="imgboxheader">
+                <img src="images\kim.jpg" alt="Kim" />
+            </div>
         </header>
-        <nav class="menu">
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="projets.html">Projets et expériences</a></li>
-                <li><a href="cv.html">CV</a></li>
-                <li><a href="hobbies.html">Hobbies</a></li>
-            </ul>
-        </nav>
-        <div>
-            <h2>Mon Curriculum Vitae</h2>
-            <p>
-                Vous pouvez le visualiser <a href="https://drive.google.com/file/d/1RTlNESrHEk3TpjsmJLlfse_jWtJX_fp0/view?usp=share_link">ici</a> !
-            </p>
+        <div class="bigcontent">
+            <div id="menu_dynamique">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="projets.html">Projets et expériences</a></li>
+                        <li><a id="currentpage" href="cv.html">CV</a></li>
+                        <li><a href="hobbies.html">Hobbies</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="content">
+                <h2>Mon Curriculum Vitae</h2>
+                <p>
+                    Vous pouvez le visualiser <a href="https://drive.google.com/file/d/1RTlNESrHEk3TpjsmJLlfse_jWtJX_fp0/view?usp=share_link">ici</a> !
+                </p>
+            </div>
         </div>
-        <footer>
-            <p>Site réalisé dans le cadre du cours d'IDAW à IMT Nord Europe</p>
-        </footer>
+        <div class="bottom">
+            <footer>
+                Site réalisé par Kim Luxembourger dans le cadre du cours d'IDAW à IMT Nord Europe
+            </footer>
+        </div>
     </body>
 </html>
