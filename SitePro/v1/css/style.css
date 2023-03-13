@@ -57,7 +57,7 @@ ul{
 }
 #menu_dynamique ul li {
     text-align:center;
-    border: 1px solid #000 ;
+    border: 0px solid #000 ;
     padding:20px 0;
     max-height: 55px;
 }
