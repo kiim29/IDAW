@@ -11,16 +11,9 @@
             </div>
         </header>
         <div class="bigcontent">
-            <div id="menu_dynamique">
-                <nav>
-                    <ul>
-                        <li><a href="index.php">Accueil</a></li>
-                        <li><a id="currentpage" href="projets.php">Projets et expériences</a></li>
-                        <li><a href="cv.php">CV</a></li>
-                        <li><a href="hobbies.php">Hobbies</a></li>
-                    </ul>
-                </nav>
-            </div>
+            <?php
+                require_once('template_menu.php');
+            ?>
             <div class="content">
                 <h2>Projets et expériences</h2>
                 <h3><i>Où est Charlie ?</i> - Bras robotique intelligent</h3>
