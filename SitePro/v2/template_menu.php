@@ -1,12 +1,30 @@
 <!doctype html>
-<html>
-<div id="menu_dynamique">
-    <nav>
-        <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="projets.php">Projets et expériences</a></li>
-            <li><a href="cv.php">CV</a></li>
-            <li><a href="hobbies.php">Hobbies</a></li>
-        </ul>
-    </nav>
-</div>
+    <html>
+    <?php
+    function renderMenuToHTML($currentPageId) {
+        // un tableau qui définit la structure du site
+        $mymenu = array(
+            // idPage => titre
+            'index' => 'Accueil' ,
+            'cv' => 'CV',
+            'projets' => 'Projets et expériences',
+            'hobbies' => 'Hobbies'
+        );
+        // echo le HTML exact du menu
+        echo "
+        <div id='menu_dynamique'>
+            <nav>
+                <ul>";
+        foreach($mymenu as $pageId => $pageName) {
+            if($pageId==$currentPageId){
+                echo "<li><a id='currentpage' href='".$pageId.".php'>".$pageName."</a></li>";
+            }
+            else {
+                echo "<li><a href='".$pageId.".php'>".$pageName."</a></li>";
+            }
+        }
+        echo "  </ul>
+            </nav>
+        </div>";
+    }
+    ?>

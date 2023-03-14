@@ -3,16 +3,10 @@
     <?php
         require_once('template_header.php');
     ?>
-    <body>
-        <header>
-            <h1 id="titleheader">Kim Luxembourger</h1>
-            <div class="imgbox" id="imgboxheader">
-                <img src="images\kim.jpg" alt="Kim" />
-            </div>
-        </header>
         <div class="bigcontent">
             <?php
                 require_once('template_menu.php');
+                renderMenuToHTML('cv');
             ?>
             <div class="content">
                 <h2>Mon Curriculum Vitae</h2>
