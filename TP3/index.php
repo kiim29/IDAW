@@ -1,27 +1,33 @@
-<html>
 <?php
 session_start();
-setcookie('css',$_GET['css']);
+
+
+echo "<html>";
+
 function generateHTMLHeadWithCSS($styl) {
     echo ('<head>
             <link rel="stylesheet" href="css/'.$styl.'.css">
         </head>');
 }
 
+$currentStyle = "style1";
+
 if (isset($_COOKIE['css'])) {
     if ($_COOKIE['css']=='style2') {
-        // echo 'style222';
-        generateHTMLHeadWithCSS('style2');
+        $currentStyle = 'style2';
     }
     else {
-        // echo 'style111';
-        generateHTMLHeadWithCSS('style1');
+        $currentStyle = 'style1';
     }
 }
-else {
-    // echo 'styledefault';
-    generateHTMLHeadWithCSS('style1');
-}
+
+if (isset($_GET['css'])) {
+    setcookie('css',$_GET['css']);
+    $currentStyle = $_GET['css'];
+} 
+
+generateHTMLHeadWithCSS($currentStyle);
+
 ?>
 <form id="style_form" action="index.php" method="GET">
     <select name="css">
