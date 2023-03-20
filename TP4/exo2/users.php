@@ -23,7 +23,10 @@ $request = $pdo->prepare("select * from users");
 
 $request -> execute();
 
-echo "<html>
+echo "<!doctype html>
+<html>
+<head></head>
+<body>
 <h1>Liste des utilisateurs</h1>
 <table>
 ";
@@ -41,6 +44,11 @@ $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
 foreach ($resultat as $row) {
     generateHTMLRow($row['id'],$row['name'],$row['email']);
 }
+echo "</table>";
+
+
+
+
 
 // /*print_r permet un affichage lisible des résultats,
 //  *<pre> rend le tout un peu plus lisible*/
@@ -52,3 +60,6 @@ foreach ($resultat as $row) {
 $pdo = null;
 
 ?>
+</table>
+</body>
+</html>
