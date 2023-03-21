@@ -49,7 +49,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_OBJ);
                 $body = json_encode($resultat);
-                header("Location : users.php?".$resultat['id']);
+                // header("Location : users.php?".$resultat['id']); //TODO : surtout pas, en fait faut la mettre dans le json
                 http_response_code(201);
                 echo $body;
                 //TODO : réponse : Created, Location, valeurs
