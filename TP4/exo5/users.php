@@ -1,14 +1,9 @@
 <?php
 require_once('config.php');
-
 $connectionString = "mysql:host=". _MYSQL_HOST;
-
-if(defined('_MYSQL_PORT'))
-    $connectionString .= ";port=". _MYSQL_PORT;
-
+if(defined('_MYSQL_PORT')) {$connectionString .= ";port=". _MYSQL_PORT;}
 $connectionString .= ";dbname=" . _MYSQL_DBNAME;
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8' );
-
 $pdo = NULL;
 try {
     $pdo = new PDO($connectionString,_MYSQL_USER,_MYSQL_PASSWORD,$options);
@@ -17,6 +12,84 @@ try {
 catch (PDOException $erreur) {
     echo('Erreur : '.$erreur->getMessage());
 }
+
+
+if (isset($_SERVER['REQUEST_METHOD'])) {
+    switch($_SERVER['REQUEST_METHOD']) {
+        case 'GET' :
+            if (isset($_GET['id'])) {
+                //select * from users where id = id
+                $request = $pdo->prepare("select * from `users` where id=".$_GET['id']);
+                $request -> execute();
+                $resultat = $request->fetch(PDO::FETCH_OBJ);
+                $body = json_encode($resultat);
+                http_response_code(200);
+                echo $body;
+                //réponse : OK, valeurs
+            } else {
+                //select * from users
+                $request = $pdo->prepare("select * from users");
+                $request -> execute();
+                $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
+                $body = json_encode($resultat);
+                http_response_code(200);
+                echo $body;
+                //réponse : OK, valeurs
+            }
+        break;
+        
+        case 'POST' :
+            if (isset($_POST['name']) && isset($_POST['email'])) {
+                //insert into users (name, email) values (name, email)
+                echo "INSERT INTO `users` (name,email) VALUES ('".$_POST['name']."','".$_POST['email']."')";
+                $request = $pdo->prepare("INSERT INTO `users` (name,email) VALUES ('".$_POST['name']."','".$_POST['email']."')");
+                $request -> execute();
+                //select id from users where name=name and email=email --> Nouvelle location
+                $request = $pdo->prepare("select * from `users` where name='".$_POST['name']."' and email='".$_POST['email']);
+                $request -> execute();
+                $resultat = $request->fetch(PDO::FETCH_OBJ);
+                $body = json_encode($resultat);
+                header("Location : users.php?".$resultat['id']);
+                http_response_code(201);
+                echo $body;
+                //TODO : réponse : Created, Location, valeurs
+            } else {
+                //TODO : $erreur ?
+                http_response_code(400);
+            }
+        break;
+
+        case 'PUT' :
+            parse_str(file_get_contents("php://input"), $output);
+            if (isset($output['id']) && isset($output['name']) && isset($output['email'])) {
+                //TODO : select * from users where id = id --> Anciennes valeurs
+                //TODO : update users set name = name, email = email where id = id
+                //TODO : réponse : OK, anciennes valeurs, nouvelles valeurs
+            } else {
+                //TODO : $erreur ?
+            }
+        break;
+
+        case 'DELETE' :
+            parse_str(file_get_contents("php://input"), $output);
+            if (isset($output['id'])) {
+                //TODO : select * from users where id = id
+                //TODO : réponse : OK, valeurs
+            } else {
+                //TODO : $erreur?
+            }
+        break;
+
+        default :
+            http_response_code(400);
+    }
+} else {
+    http_response_code(400);
+}
+
+
+
+
 
 if (! isset($_GET['action'])) {
     $_GET['action']='init';
