@@ -70,9 +70,8 @@
         </div>
     </form>
     <script>
-
+        let idEnModif = -1;
         let id=0;
-
         function onFormSubmit() {
             // prevent the form to be sent to the server
             event.preventDefault();
@@ -81,20 +80,29 @@
             let date = $("#inputDate").val();
             let aimeCours = $("#inputAimeCours").val();
             let remarques = $("#inputRemarques").val();
-            let crud = `<a onclick='editLine(${id});return false;' id=edit>Modifier</a>  <a onclick='deleteLine(${id});return false;' id=delete>Supprimer</a>`;
-            $("#studentsTableBody").append(`<tr id=${id}><td id=cellNom${id}>${nom}</td><td id=cellPrenom${id}>${prenom}</td><td id=cellDate${id}>${date}</td><td id=cellAimeCours${id}>${aimeCours}</td><td id=cellRemarques${id}>${remarques}</td><td>${crud}</td></tr>`);
-            id++;
+            if (idEnModif!=-1) {
+                document.getElementById(`cellNom${idEnModif}`).textContent = nom;
+                document.getElementById(`cellPrenom${idEnModif}`).textContent = prenom;
+                document.getElementById(`cellDate${idEnModif}`).textContent = date;
+                document.getElementById(`cellAimeCours${idEnModif}`).textContent = aimeCours;
+                document.getElementById(`cellRemarques${idEnModif}`).textContent = remarques;
+                idEnModif=-1;
+            } else {
+                let crud = `<a href='#' onclick='editLine(${id});return false;' id=edit>Modifier</a>  <a href='#' onclick='deleteLine(${id});return false;' id=delete>Supprimer</a>`;
+                $("#studentsTableBody").append(`<tr><td id=cellNom${id}>${nom}</td><td id=cellPrenom${id}>${prenom}</td><td id=cellDate${id}>${date}</td><td id=cellAimeCours${id}>${aimeCours}</td><td id=cellRemarques${id}>${remarques}</td><td>${crud}</td></tr>`);
+                id++;
+            }
         }
         function deleteLine(id) {
             document.getElementById('studentsTableBody').deleteRow(id);
         }
         function editLine(id) {
-            let line = document.getElementById(id);
-            document. getElementById('inputNom').value = document.getElementById(`cellNom${id}`).textContent;
-            document. getElementById('inputPrenom').value = document.getElementById(`cellPrenom${id}`).textContent;
-            document. getElementById('inputDate').value = document.getElementById(`cellDate${id}`).textContent;
-            document. getElementById('inputAimeCours').value = document.getElementById(`cellAimeCours${id}`).textContent;
-            document. getElementById('inputRemarques').value = document.getElementById(`cellRemarques${id}`).textContent;
+            idEnModif=id;
+            document.getElementById('inputNom').value = document.getElementById(`cellNom${id}`).textContent;
+            document.getElementById('inputPrenom').value = document.getElementById(`cellPrenom${id}`).textContent;
+            document.getElementById('inputDate').value = document.getElementById(`cellDate${id}`).textContent;
+            document.getElementById('inputAimeCours').value = document.getElementById(`cellAimeCours${id}`).textContent;
+            document.getElementById('inputRemarques').value = document.getElementById(`cellRemarques${id}`).textContent;
         }
     </script>
 </body>
