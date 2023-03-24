@@ -20,7 +20,7 @@ En cas d’erreur, retourne le code d’erreur de statut HTTP adapté
   
 
 ### PUT /users.php  
-— Paramètres : tous les nouveaux champs de l’utilisateur à modifier (id : entier, name : string, email : string)  
+— Paramètres : tous les nouveaux champs de l’utilisateur à modifier (id : entier, name : string, email : string). Les trois doivent être spécifiés. L'identifiant ne peut être modifié. Si le name ou l'email ne changent pas il faut tout de même donner une valeur (identique à l'ancienne du coup)  
 — Résultat : retourne le code de statut HTTP 200 (OK) et le corps de la réponse contient toutes les anciennes et nouvelles infos sur l’utilisateur au format JSON  
 En cas d’erreur, retourne le code d’erreur de statut HTTP adapté  
   
