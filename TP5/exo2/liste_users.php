@@ -67,18 +67,7 @@
                 { data: 'id' },
                 { data: 'name' },
                 { data: 'email' }
-            ],
-            buttons: [{
-                extend: 'edit',
-                editor: myEditor,
-                formButtons: [
-                    {
-                        label: 'Cancel',
-                        fn: function () { this.close(); }
-                    },
-                    'Save row'
-                ]
-            }]
+            ]
         }  );
 
         // $('#usersTable').button().add( 0, {
