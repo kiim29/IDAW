@@ -7,6 +7,11 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script>import DataTable from 'datatables.net-dt';</script>
+    <script>
+        let PREFIX = "<?php
+            require_once('config.php');
+            echo API_URL_PREFIX; ?>";
+    </script>
     <title>liste users with datatables</title>
     <style></style>
 </head>
@@ -17,11 +22,11 @@
                 <th scope="col">ID</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Email</th>
+                <th scope="col">Actions possibles</th>
             </tr>
         </thead>
         <tbody id="usersTableBody">
-            <tr>
-            </tr>
+            
         </tbody>
     </table>
 
@@ -52,7 +57,6 @@
     </form>
 
     <script>
-        let PREFIX = 'http://localhost';
         
         $('#usersTable').DataTable( {
             ajax: { 
@@ -63,9 +67,31 @@
                 { data: 'id' },
                 { data: 'name' },
                 { data: 'email' }
-            ]
+            ],
+            buttons: [{
+                extend: 'edit',
+                editor: myEditor,
+                formButtons: [
+                    {
+                        label: 'Cancel',
+                        fn: function () { this.close(); }
+                    },
+                    'Save row'
+                ]
+            }]
         }  );
 
+        // $('#usersTable').button().add( 0, {
+        //     action: function ( e, dt, button, config ) {
+        //         dt.ajax.reload();
+        //     },
+        //     text: 'Reload table'
+        // } );
+
+        
+        function onFormSubmit() {
+
+        }
     </script>
 </body>
 </html>
