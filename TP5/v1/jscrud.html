@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <title>tabletest</title>
+    <style>
+        body{
+            margin-top: 5em;
+        }
+        .table {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prenom</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Aime le cours Web</th>
+                <th scope="col">Remarques</th>
+                <th scope="col">CRUD</th>
+            </tr>
+        </thead>
+        <tbody id="studentsTableBody">
+
+        </tbody>
+    </table>
+    <form id="addStudentForm" action="" onsubmit="onFormSubmit();">
+        <div class="form-group row">
+            <label for="inputNom" class="col-sm-2 col-form-label">Nom *</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputNom" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPrenom" class="col-sm-2 col-form-label">Prenom</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputPrenom" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputDate" class="col-sm-2 col-form-label">Date de naissance</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputDate" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputAimeCours" class="col-sm-2 col-form-label">Aime le cours</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputAimeCours" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputRemarques" class="col-sm-2 col-form-label">Remarques</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputRemarques" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <span class="col-sm-2"></span>
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-primary form-control">Submit</button>
+            </div>
+        </div>
+    </form>
+    <script>
+
+        let id=0;
+
+        function onFormSubmit() {
+            // prevent the form to be sent to the server
+            event.preventDefault();
+            let nom = $("#inputNom").val();
+            let prenom = $("#inputPrenom").val();
+            let date = $("#inputDate").val();
+            let aimeCours = $("#inputAimeCours").val();
+            let remarques = $("#inputRemarques").val();
+            let crud = `<a onclick='editLine(${id});return false;' id=edit>Modifier</a>  <a onclick='deleteLine(${id});return false;' id=delete>Supprimer</a>`;
+            $("#studentsTableBody").append(`<tr id=${id}><td id=cellNom${id}>${nom}</td><td id=cellPrenom${id}>${prenom}</td><td id=cellDate${id}>${date}</td><td id=cellAimeCours${id}>${aimeCours}</td><td id=cellRemarques${id}>${remarques}</td><td>${crud}</td></tr>`);
+            id++;
+        }
+        function deleteLine(id) {
+            document.getElementById('studentsTableBody').deleteRow(id);
+        }
+        function editLine(id) {
+            let line = document.getElementById(id);
+            document. getElementById('inputNom').value = document.getElementById(`cellNom${id}`).textContent;
+            document. getElementById('inputPrenom').value = document.getElementById(`cellPrenom${id}`).textContent;
+            document. getElementById('inputDate').value = document.getElementById(`cellDate${id}`).textContent;
+            document. getElementById('inputAimeCours').value = document.getElementById(`cellAimeCours${id}`).textContent;
+            document. getElementById('inputRemarques').value = document.getElementById(`cellRemarques${id}`).textContent;
+        }
+    </script>
+</body>
+</html>
