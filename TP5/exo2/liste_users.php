@@ -59,7 +59,6 @@
     <script>
         let enModif = false;
         let table;
-        console.log('debut');
         $(document).ready(function () {
             table = $('#usersTable').DataTable( {
                 ajax: { 
@@ -87,17 +86,18 @@
         $('#usersTable tbody').on('click', 'button', function () {
             switch ($(this).attr('id')) {
                 case 'edit' :
-                    console.log('bla');
                     enModif = true;
                     var data = table.row($(this).parents('tr')).data();
-                    console.log(data['name']);
-                    $('#inputID').value = data['id'];
-                    $('#inputName').value = data['name'];
-                    $('#inputEmail').value = data['email'];
+                    document.getElementById('inputID').value = data['id'];
+                    document.getElementById('inputName').value = data['name'];
+                    document.getElementById('inputEmail').value = data['email'];
+                    // Ces versions ne marchent pas : intéressants de demander pourquoi peut-être ? //TODO
+                    // $('#inputID').value = data['id'];
+                    // $('#inputName').value = data['name'];
+                    // $('#inputEmail').value = data['email'];
                 break;
 
                 case 'delete' :
-                    console.log('bladel');
                     var dataDel = table.row($(this).parents('tr')).data();
                     var idDel = dataDel['id'];
                     //Requête AJAX DELETE pour supprimer
@@ -110,9 +110,7 @@
                     //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                     .done(function(response){
                         let res = JSON.stringify(response);
-                        console.log('delDone');
-                        // console.log(table.row($(this).parents('tr')));
-                        // table.row($(this).parents('tr')).remove().draw();
+                        table.ajax.reload;
                     })
                     //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                     .fail(function(error){
@@ -123,10 +121,13 @@
         });
         
         function onFormSubmit() {
-            if(enModif && $('#inputID').value != null) {
-                var idModif = $("inputID").value;
-                var nomModif = $("inputName").value;
-                var emailModif = $("inputEmail").value;
+            // prevent the form to be sent to the server
+            event.preventDefault();
+            if(enModif && document.getElementById('inputID').value != null) { //MODIFICATION D'UN USER EXISTANT
+                var idModif = document.getElementById('inputID').value;
+                var nomModif = document.getElementById('inputName').value;
+                var emailModif = document.getElementById('inputEmail').value;
+                enModif=false;
                 //Requête AJAX PUT pour modifier
                 $.ajax({
                     url:  PREFIX + '/IDAW/TP4/exo5/users.php',
@@ -137,16 +138,60 @@
                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                 .done(function(response){
                     let res = JSON.stringify(response);
+                    document.getElementById("usersForm").reset(); 
                     table.draw();
                 })
                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                 .fail(function(error){
                     alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
                 });
-            }else{
-
+            }else if(!(enModif)) { //AJOUT D'UN NOUVEL USER
+                var nomNouv = document.getElementById('inputName').value;
+                var emailNouv = document.getElementById('inputEmail').value;
+                //Requête AJAX POST pour ajouter
+                $.ajax({
+                    url:  PREFIX + '/IDAW/TP4/exo5/users.php',
+                    method: "POST",
+                    dataType : "json",
+                    data: {name: nomNouv, email: emailNouv}
+                })
+                //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
+                .done(function(response){
+                    let res = JSON.stringify(response);
+                    document.getElementById("usersForm").reset(); 
+                    table.draw();
+                })
+                //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
+                .fail(function(error){
+                    alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+                });
             }
         }
+
+        // function update_table() {
+        //     //TODO : faire un GET pour mettre à jour la table avec la base de données
+        //     table = $('#usersTable').DataTable( {
+        //         ajax: { 
+        //             url: PREFIX + '/IDAW/TP4/exo5/users.php',
+        //             dataSrc: ''
+        //         },
+        //         columns: [
+        //             { data: 'id' },
+        //             { data: 'name' },
+        //             { data: 'email' },
+        //             { data: null },
+        //             { data: null }
+        //         ],
+        //         columnDefs: [ {
+        //             targets: 3,
+        //             data: null,
+        //             defaultContent: '<button id=edit>Edit</button>'},
+        //             {targets: 4,
+        //             data: null,
+        //             defaultContent: '<button id=delete>Delete</button>'}
+        //         ]
+        //     });
+        // }
     </script>
 </body>
 </html>
