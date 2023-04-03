@@ -146,3 +146,4 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 
 /*** close the database connection ***/
 $pdo = null;
+

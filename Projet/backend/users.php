@@ -4,50 +4,53 @@ require_once('init_pdo.php');
 
 if (isset($_SERVER['REQUEST_METHOD'])) {
     switch($_SERVER['REQUEST_METHOD']) {
-
+        
         /*********************************SELECTION*****************************************/
         case 'GET' :
-            if (isset($_GET['id_aliment'])) {
-                //select * from aliments where id_aliment = id_aliment
-                $request = $pdo->prepare("select * from `aliments` where id_aliment=".$_GET['id_aliment']);
+            if (isset($_GET['login'])) {
+                //select * from utilisateurs where login = login
+                $request = $pdo->prepare("select * from `utilisateurs` where login=".$_GET['login']);
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_OBJ);
                 $body = json_encode($resultat);
                 http_response_code(200);
                 header('content-type:application/json');
                 echo $body;
+                //réponse : OK, valeurs
             } else {
-                //select * from aliments
-                $request = $pdo->prepare("select * from aliments");
+                //select * from utilisateurs
+                $request = $pdo->prepare("select * from utilisateurs");
                 $request -> execute();
                 $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
                 $body = json_encode($resultat);
                 http_response_code(200);
                 header('content-type:application/json');
                 echo $body;
+                //réponse : OK, valeurs
             }
         break;
         
         /*********************************AJOUT*****************************************/
         case 'POST' :
-            if (isset($_POST['nom']) && isset($_POST['id_type_aliment'])) {
-                //insert into aliments (nom, id_type_aliment,...) values (nom, id_type_aliment,...)
-                $request = $pdo->prepare("INSERT INTO `aliments` (nom,id_type_aliment,calories,glucides,sucres,lipides,acides_gras,proteines,sel) 
-                VALUES ('".$_POST['nom']."','".$_POST['id_type_aliment']."','".$_POST['calories']."','".$_POST['glucides']."','".$_POST['sucres']."','".$_POST['lipides']."','".$_POST['acides_gras']."','".$_POST['proteines']."','".$_POST['sel']."')");
+            if (isset($_POST['login']) &&isset($_POST['nom']) && isset($_POST['age']) && isset($_POST['taille']) && isset($_POST['poids'])) {
+                //insert into utilisateurs (login, nom, age, taille, poids) values (login, nom, age, taille, poids)
+                $request = $pdo->prepare("INSERT INTO `utilisateurs` (login,nom,age,sexe,taille,poids,profil) 
+                VALUES ('".$_POST['login']."','".$_POST['nom']."','".$_POST['age']."','".$_POST['sexe']."','".$_POST['taille']."','".$_POST['poids']."','".$_POST['profil']."')");
                 $request -> execute();
-                //select id_aliment from aliments where nom=nom and id_type_aliment=id_type_aliment --> Nouvelle location
-                $request = $pdo->prepare("select * from `aliments` where nom='".$_POST['nom']."' and id_type_aliment='".$_POST['id_type_aliment']."'");
+                //select login from utilisateurs where nom=nom and age=age and taille=taille and poids=poids --> Nouvelle location
+                $request = $pdo->prepare("select * from `utilisateurs` where login='".$_POST['login']."' and age='".$_POST['age']."' and taille='".$_POST['taille']."' and poids='".$_POST['poids']."'");
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_ASSOC);
-                $final_result = array('Location' => 'aliments.php?id_aliment='.$resultat['id_aliment']);
+                $final_result = array('Location' => 'utilisateurs.php?login='.$resultat['login']);
                 $final_result['data'] = $resultat;
                 $body = json_encode($final_result);
                 http_response_code(201);
                 header('content-type:application/json');
                 echo $body;
+                //réponse : Created, Location, valeurs
             } else {
-                //$erreur
-                $resultat = array('reponse' => "La création est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un nom et un type.");
+                //$erreur ?
+                $resultat = array('reponse' => "La création est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un nom et un age.");
                 $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
@@ -57,18 +60,19 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
         /*********************************MODIFICATION*****************************************/
         case 'PUT' :
             parse_str(file_get_contents("php://input"), $output);
-            if (isset($output['id_aliment']) && isset($output['nom']) && isset($output['id_type_aliment'])) {
-                //select * from aliments where id_aliment = id_aliment --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `aliments` where id_aliment=".$output['id_aliment']);
+            if (isset($output['login']) && isset($output['nom']) && isset($output['age']) && isset($output['taille']) && isset($output['poids'])) {
+                //select * from utilisateurs where login = login --> Anciennes valeurs
+                $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
-                if (isset($old_values['id_aliment'])) { //si l'aliment d'id_aliment=id_aliment est bien présent dans la base
-                    //update aliments set nom = nom, type = type... where id_aliment = id_aliment --> Modif et Nouvelles valeurs
-                    $request = $pdo->prepare("UPDATE `aliments` 
-                    SET `nom`='".$output['nom']."', `id_type_aliment`='".$output['id_type_aliment']."', `calories`='".$output['calories']."', `glucides`='".$output['glucides']."', `sucres`='".$output['sucres']."' `lipides`='".$output['lipides']."' `acides_gras`='".$output['acides_gras']."' `proteines`='".$output['proteines']."' `sel`='".$output['sel']."' 
-                    WHERE `id_aliment`=".$output['id_aliment']);
+                if (isset($old_values['login'])) { //si l'utilisateur de login=login est bien présent dans la base
+                    //update utilisateurs set nom = nom, age = age,... where login = login --> Modif et Nouvelles valeurs
+                    $request = $pdo->prepare("UPDATE `utilisateurs` 
+                    SET `nom`='".$output['nom']."', `age`='".$output['age']."', `sexe`='".$output['sexe']."', `taille`='".$output['taille']."', `poids`='".$output['poids']."', `profil`='".$output['profil']."' 
+                    WHERE `login`=".$output['login']);
                     $request -> execute();
-                    $request = $pdo->prepare("select * from `aliments` where id_aliment=".$output['id_aliment']);
+                    //réponse : OK, anciennes valeurs, nouvelles valeurs
+                    $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
                     $request -> execute();
                     $resultat = $request->fetch(PDO::FETCH_ASSOC);
                     $final_result['old_data'] = $old_values;
@@ -78,7 +82,6 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                     header('content-type:application/json');
                     echo $body;
                 } else {
-                    //$erreur
                     $resultat = array('reponse' => "La modification est impossible. Cause possible : l'identifiant donné n'est pas correct.");
                     $body = json_encode($resultat);
                     http_response_code(400);
@@ -86,27 +89,27 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                     echo $body;
                 }
             } else {
-                //$erreur
-                $resultat = array('reponse' => "La modification est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un id_aliment, un nom et un type.");
+                //$erreur ?
+                $resultat = array('reponse' => "La modification est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un login, un nom et un age.");
                 $body = json_encode($response);
                 http_response_code(400);
                 header('content-type:application/json');
-                echo $body;
             }
         break;
 
         /*********************************SUPPRESSION*****************************************/
         case 'DELETE' :
             parse_str(file_get_contents("php://input"), $output);
-            if (isset($output['id_aliment'])) {
-                //select * from aliments where id_aliment = id_aliment --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `aliments` where id_aliment=".$output['id_aliment']);
+            if (isset($output['login'])) {
+                //select * from utilisateurs where login = login --> Anciennes valeurs
+                $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
-                if (isset($old_values['id_aliment'])) {
-                    //delete from aliments where id_aliment = id_aliment
-                    $request = $pdo->prepare("DELETE FROM `aliments` WHERE id_aliment='".$old_values['id_aliment']."'");
+                if (isset($old_values['login'])) {
+                    //delete from utilisateurs where login = login
+                    $request = $pdo->prepare("DELETE FROM `utilisateurs` WHERE login='".$old_values['login']."'");
                     $request -> execute();
+                    //réponse : OK, suppression faite, valeurs
                     $final_result['reponse'] = "La suppression est effectuée";
                     $final_result['old_data'] = $old_values;
                     $body = json_encode($final_result);

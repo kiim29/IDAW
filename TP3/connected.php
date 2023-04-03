@@ -10,25 +10,21 @@ try{
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // echo 'Connexion réussie';
 
-    /*Sélectionne les valeurs dans les colonnes prenom et mail de la table
-        *users pour chaque entrée de la table*/
+    /*Sélectionne les valeurs dans les colonnes prenom et mail de la table users pour chaque entrée de la table*/
     $sth = $conn->prepare("SELECT * FROM users");
     $sth->execute();
     
-    /*Retourne un tableau associatif pour chaque entrée de notre table
-        *avec le nom des colonnes sélectionnées en clefs*/
+    /*Retourne un tableau associatif pour chaque entrée de notre table avec le nom des colonnes sélectionnées en clefs*/
     $resultat = $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/*On capture les exceptions si une exception est lancée et on affiche
-    *les informations relatives à celle-ci*/
+/*On capture les exceptions si une exception est lancée et on affiche les informations relatives à celle-ci*/
 catch(PDOException $e){
     echo "Erreur : " . $e->getMessage();
 }
-// on simule une base de données
-$users = array(
-    // login => password
-);
+
+// On recopie la base de données
+$users = array();
 foreach ($resultat as $row) {
     $users[$row['login']] = $row['password'];
 }

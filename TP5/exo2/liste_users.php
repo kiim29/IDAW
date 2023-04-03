@@ -91,14 +91,11 @@
                     document.getElementById('inputID').value = data['id'];
                     document.getElementById('inputName').value = data['name'];
                     document.getElementById('inputEmail').value = data['email'];
-                    // Ces versions ne marchent pas : intéressants de demander pourquoi peut-être ? //TODO
-                    // $('#inputID').value = data['id'];
-                    // $('#inputName').value = data['name'];
-                    // $('#inputEmail').value = data['email'];
                 break;
 
                 case 'delete' :
-                    var dataDel = table.row($(this).parents('tr')).data();
+                    var tr = $(this).parents('tr');
+                    var dataDel = table.row(tr).data();
                     var idDel = dataDel['id'];
                     //Requête AJAX DELETE pour supprimer
                     $.ajax({
@@ -110,8 +107,7 @@
                     //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                     .done(function(response){
                         let res = JSON.stringify(response);
-                        table.ajax.reload;
-                        console.log("trying to refresh");
+                        $('#usersTable').DataTable().ajax.reload();
                     })
                     //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                     .fail(function(error){
@@ -139,8 +135,8 @@
                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                 .done(function(response){
                     let res = JSON.stringify(response);
-                    document.getElementById("usersForm").reset(); 
-                    table.draw();
+                    document.getElementById("usersForm").reset();
+                    $('#usersTable').DataTable().ajax.reload();
                 })
                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                 .fail(function(error){
@@ -159,8 +155,9 @@
                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                 .done(function(response){
                     let res = JSON.stringify(response);
-                    document.getElementById("usersForm").reset(); 
-                    table.draw();
+                    var idNouv = response['data']['id'];
+                    document.getElementById("usersForm").reset();
+                    $('#usersTable').DataTable().ajax.reload();
                 })
                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                 .fail(function(error){
@@ -169,30 +166,6 @@
             }
         }
 
-        // function update_table() {
-        //     //TODO : faire un GET pour mettre à jour la table avec la base de données
-        //     table = $('#usersTable').DataTable( {
-        //         ajax: { 
-        //             url: PREFIX + '/IDAW/TP4/exo5/users.php',
-        //             dataSrc: ''
-        //         },
-        //         columns: [
-        //             { data: 'id' },
-        //             { data: 'name' },
-        //             { data: 'email' },
-        //             { data: null },
-        //             { data: null }
-        //         ],
-        //         columnDefs: [ {
-        //             targets: 3,
-        //             data: null,
-        //             defaultContent: '<button id=edit>Edit</button>'},
-        //             {targets: 4,
-        //             data: null,
-        //             defaultContent: '<button id=delete>Delete</button>'}
-        //         ]
-        //     });
-        // }
     </script>
 </body>
 </html>
