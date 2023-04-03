@@ -111,6 +111,7 @@
                     .done(function(response){
                         let res = JSON.stringify(response);
                         table.ajax.reload;
+                        console.log("trying to refresh");
                     })
                     //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                     .fail(function(error){
