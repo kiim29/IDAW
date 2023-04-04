@@ -9,24 +9,27 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
         case 'GET' :
             if (isset($_GET['login'])) {
                 //select * from utilisateurs where login = login
-                $request = $pdo->prepare("select * from `utilisateurs` where login=".$_GET['login']);
+                $request = $pdo->prepare("select * from `utilisateurs` 
+                join profils_sportifs on profil=id_profil 
+                join sexe on sexe=id_sexe
+                where login=".$_GET['login']);
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_OBJ);
                 $body = json_encode($resultat);
                 http_response_code(200);
                 header('content-type:application/json');
                 echo $body;
-                //réponse : OK, valeurs
             } else {
                 //select * from utilisateurs
-                $request = $pdo->prepare("select * from utilisateurs");
+                $request = $pdo->prepare("select * from `utilisateurs` 
+                join profils_sportifs on profil=id_profil 
+                join sexe on sexe=id_sexe");
                 $request -> execute();
                 $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
                 $body = json_encode($resultat);
                 http_response_code(200);
                 header('content-type:application/json');
                 echo $body;
-                //réponse : OK, valeurs
             }
         break;
         
@@ -41,13 +44,12 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 $request = $pdo->prepare("select * from `utilisateurs` where login='".$_POST['login']."' and age='".$_POST['age']."' and taille='".$_POST['taille']."' and poids='".$_POST['poids']."'");
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_ASSOC);
-                $final_result = array('Location' => 'utilisateurs.php?login='.$resultat['login']);
+                $final_result = array('Location' => 'users.php?login='.$resultat['login']);
                 $final_result['data'] = $resultat;
                 $body = json_encode($final_result);
                 http_response_code(201);
                 header('content-type:application/json');
                 echo $body;
-                //réponse : Created, Location, valeurs
             } else {
                 //$erreur ?
                 $resultat = array('reponse' => "La création est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un nom et un age.");
@@ -71,7 +73,6 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                     SET `nom`='".$output['nom']."', `age`='".$output['age']."', `sexe`='".$output['sexe']."', `taille`='".$output['taille']."', `poids`='".$output['poids']."', `profil`='".$output['profil']."' 
                     WHERE `login`=".$output['login']);
                     $request -> execute();
-                    //réponse : OK, anciennes valeurs, nouvelles valeurs
                     $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
                     $request -> execute();
                     $resultat = $request->fetch(PDO::FETCH_ASSOC);
@@ -89,9 +90,8 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                     echo $body;
                 }
             } else {
-                //$erreur ?
                 $resultat = array('reponse' => "La modification est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un login, un nom et un age.");
-                $body = json_encode($response);
+                $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
             }
@@ -109,7 +109,6 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                     //delete from utilisateurs where login = login
                     $request = $pdo->prepare("DELETE FROM `utilisateurs` WHERE login='".$old_values['login']."'");
                     $request -> execute();
-                    //réponse : OK, suppression faite, valeurs
                     $final_result['reponse'] = "La suppression est effectuée";
                     $final_result['old_data'] = $old_values;
                     $body = json_encode($final_result);
@@ -119,14 +118,14 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 }
                 else {
                     $resultat = array('reponse' => "La modification est impossible. Cause possible : l'identifiant donné n'est pas correct.");
-                    $body = json_encode($response);
+                    $body = json_encode($resultat);
                     http_response_code(400);
                     header('content-type:application/json');
                     echo $body;
                 }
             } else {
                 $resultat = array('reponse' => "La modification est impossible. Cause possible : vous n'avez pas fourni d'identifiant.");
-                $body = json_encode($response);
+                $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
                 echo $body;

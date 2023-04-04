@@ -9,7 +9,20 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
         case 'GET' :
             if (isset($_GET['id_aliment'])) {
                 //select * from aliments where id_aliment = id_aliment
-                $request = $pdo->prepare("select * from `aliments` where id_aliment=".$_GET['id_aliment']);
+                $request = $pdo->prepare("select * from aliments 
+                join types_aliments on id_type_aliment=id_type 
+                where id_aliment=".$_GET['id_aliment']);
+                $request -> execute();
+                $resultat = $request->fetch(PDO::FETCH_OBJ);
+                $body = json_encode($resultat);
+                http_response_code(200);
+                header('content-type:application/json');
+                echo $body;
+            } else if (isset($_GET['id_type_aliment'])) {
+                //select * from aliments where id_type_aliment = id_type_aliment
+                $request = $pdo->prepare("select * from aliments 
+                join types_aliments on id_type_aliment=id_type 
+                where id_type_aliment=".$_GET['id_type_aliment']);
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_OBJ);
                 $body = json_encode($resultat);
@@ -18,7 +31,8 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 echo $body;
             } else {
                 //select * from aliments
-                $request = $pdo->prepare("select * from aliments");
+                $request = $pdo->prepare("select * from aliments
+                join types_aliments on id_type_aliment=id_type");
                 $request -> execute();
                 $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
                 $body = json_encode($resultat);
@@ -88,7 +102,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
             } else {
                 //$erreur
                 $resultat = array('reponse' => "La modification est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un id_aliment, un nom et un type.");
-                $body = json_encode($response);
+                $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
                 echo $body;
@@ -116,14 +130,14 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 }
                 else {
                     $resultat = array('reponse' => "La modification est impossible. Cause possible : l'identifiant donné n'est pas correct.");
-                    $body = json_encode($response);
+                    $body = json_encode($resultat);
                     http_response_code(400);
                     header('content-type:application/json');
                     echo $body;
                 }
             } else {
                 $resultat = array('reponse' => "La modification est impossible. Cause possible : vous n'avez pas fourni d'identifiant.");
-                $body = json_encode($response);
+                $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
                 echo $body;
