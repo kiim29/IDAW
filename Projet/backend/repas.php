@@ -73,19 +73,19 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 
         /*********************************MODIFICATION*****************************************/
         case 'PUT' :
-            parse_str(file_get_contents("php://input"), $output);
+            $output = json_decode(file_get_contents("php://input"), true);
             if (isset($output['id_repas']) && isset($output['id_mangeur']) && isset($output['id_aliment_mange']) && isset($output['qte'])) {
                 //select * from repas where id_repas = id_repas --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `repas` where id_repas=".$output['id_repas']);
+                $request = $pdo->prepare("select * from `repas` where id_repas='".$output['id_repas']."'");
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
                 if (isset($old_values['id_repas'])) { //si le repas d'id_repas=id_repas est bien présent dans la base
                     //update repas set ... where id_repas = id_repas --> Modif et Nouvelles valeurs
                     $request = $pdo->prepare("UPDATE `repas` 
                     SET `id_mangeur`='".$output['id_mangeur']."', `id_aliment_mange`='".$output['id_aliment_mange']."', `qte`='".$output['qte']."', `date`='".$output['date']."' 
-                    WHERE `id_repas`=".$output['id_repas']);
+                    WHERE `id_repas`='".$output['id_repas']."'");
                     $request -> execute();
-                    $request = $pdo->prepare("select * from `repas` where id_repas=".$output['id_repas']);
+                    $request = $pdo->prepare("select * from `repas` where id_repas='".$old_values['id_repas']."'");
                     $request -> execute();
                     $resultat = $request->fetch(PDO::FETCH_ASSOC);
                     $final_result['old_data'] = $old_values;
@@ -114,10 +114,10 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 
         /*********************************SUPPRESSION*****************************************/
         case 'DELETE' :
-            parse_str(file_get_contents("php://input"), $output);
+            $output = json_decode(file_get_contents("php://input"), true);
             if (isset($output['id_repas'])) {
                 //select * from repas where id_repas = id_repas --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `repas` where id_repas=".$output['id_repas']);
+                $request = $pdo->prepare("select * from `repas` where id_repas='".$output['id_repas']."'");
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
                 if (isset($old_values['id_repas'])) {

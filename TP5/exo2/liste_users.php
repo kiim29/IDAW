@@ -102,7 +102,7 @@
                         url:  PREFIX + '/IDAW/TP4/exo5/users.php',
                         method: "DELETE",
                         dataType : "json",
-                        data: "id="+idDel
+                        data: JSON.stringify({id: idDel})
                     })
                     //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                     .done(function(response){
@@ -129,8 +129,8 @@
                 $.ajax({
                     url:  PREFIX + '/IDAW/TP4/exo5/users.php',
                     method: "PUT",
-                    dataType : "json",
-                    data: {id: idModif, name: nomModif, email: emailModif}
+                    dataType: "json",
+                    data: JSON.stringify({id: idModif, name: nomModif, email: emailModif})
                 })
                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                 .done(function(response){

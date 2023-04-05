@@ -7,12 +7,27 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
         
         /*********************************SELECTION*****************************************/
         case 'GET' :
-            if (isset($_GET['login'])) {
+            if (isset($_GET['login']) && isset($_GET['password'])) {
+                //select * from utilisateurs where login = login and password = password
+                $request = $pdo->prepare("select login from `utilisateurs` 
+                where login='".$_GET['login']."' and password='".$_GET['password']."'");
+                $request -> execute();
+                $resultat = $request->fetch(PDO::FETCH_ASSOC);
+                if (isset($resultat['login'])) {
+                    $response = array("response" => true);
+                } else {
+                    $response = array("response" => false);
+                }
+                $body = json_encode($response);
+                http_response_code(200);
+                header('content-type:application/json');
+                echo $body;
+            } else if (isset($_GET['login'])) {
                 //select * from utilisateurs where login = login
                 $request = $pdo->prepare("select * from `utilisateurs` 
                 join profils_sportifs on profil=id_profil 
                 join sexe on sexe=id_sexe
-                where login=".$_GET['login']);
+                where login='".$_GET['login']."'");
                 $request -> execute();
                 $resultat = $request->fetch(PDO::FETCH_OBJ);
                 $body = json_encode($resultat);
@@ -61,19 +76,19 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 
         /*********************************MODIFICATION*****************************************/
         case 'PUT' :
-            parse_str(file_get_contents("php://input"), $output);
+            $output = json_decode(file_get_contents("php://input"), true);
             if (isset($output['login']) && isset($output['nom']) && isset($output['age']) && isset($output['taille']) && isset($output['poids'])) {
                 //select * from utilisateurs where login = login --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
+                $request = $pdo->prepare("select * from `utilisateurs` where login='".$output['login']."'");
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
                 if (isset($old_values['login'])) { //si l'utilisateur de login=login est bien présent dans la base
                     //update utilisateurs set nom = nom, age = age,... where login = login --> Modif et Nouvelles valeurs
                     $request = $pdo->prepare("UPDATE `utilisateurs` 
                     SET `nom`='".$output['nom']."', `age`='".$output['age']."', `sexe`='".$output['sexe']."', `taille`='".$output['taille']."', `poids`='".$output['poids']."', `profil`='".$output['profil']."' 
-                    WHERE `login`=".$output['login']);
+                    WHERE `login`='".$output['login']."'");
                     $request -> execute();
-                    $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
+                    $request = $pdo->prepare("select * from `utilisateurs` where login='".$output['login']."'");
                     $request -> execute();
                     $resultat = $request->fetch(PDO::FETCH_ASSOC);
                     $final_result['old_data'] = $old_values;
@@ -99,10 +114,10 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
 
         /*********************************SUPPRESSION*****************************************/
         case 'DELETE' :
-            parse_str(file_get_contents("php://input"), $output);
+            $output = json_decode(file_get_contents("php://input"), true);
             if (isset($output['login'])) {
                 //select * from utilisateurs where login = login --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `utilisateurs` where login=".$output['login']);
+                $request = $pdo->prepare("select * from `utilisateurs` where login='".$output['login']."'");                
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
                 if (isset($old_values['login'])) {

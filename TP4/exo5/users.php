@@ -66,7 +66,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
         break;
 
         case 'PUT' :
-            parse_str(file_get_contents("php://input"), $output);
+            $output = json_decode(file_get_contents("php://input"), true);
             if (isset($output['id']) && isset($output['name']) && isset($output['email'])) {
                 //select * from users where id = id --> Anciennes valeurs
                 $request = $pdo->prepare("select * from `users` where id=".$output['id']);
@@ -96,17 +96,17 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
             } else {
                 //$erreur ?
                 $resultat = array('reponse' => "La modification est impossible. Cause possible : il manque des champs (assurez-vous d'avoir fourni un id, un name et un email.");
-                $body = json_encode($response);
+                $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
             }
         break;
 
         case 'DELETE' :
-            parse_str(file_get_contents("php://input"), $output);
+            $output = json_decode(file_get_contents("php://input"), true);
             if (isset($output['id'])) {
                 //select * from users where id = id --> Anciennes valeurs
-                $request = $pdo->prepare("select * from `users` where id=".$output['id']);
+                $request = $pdo->prepare("select * from `users` where id='".$output['id']."'");
                 $request -> execute();
                 $old_values = $request->fetch(PDO::FETCH_ASSOC);
                 if (isset($old_values['id'])) {
