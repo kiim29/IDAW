@@ -124,7 +124,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                     echo $body;
                 }
             } else {
-                $resultat = array('reponse' => "La modification est impossible. Cause possible : vous n'avez pas fourni d'identifiant.");
+                $resultat = array('reponse' => "La modification est impossible. Cause possible : vous n'avez pas fourni d'identifiant. Login reçu : ".$output['login']);
                 $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');

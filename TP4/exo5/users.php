@@ -123,14 +123,14 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 }
                 else {
                     $resultat = array('reponse' => "La modification est impossible. Cause possible : l'identifiant donné n'est pas correct.");
-                    $body = json_encode($response);
+                    $body = json_encode($resultat);
                     http_response_code(400);
                     header('content-type:application/json');
                     echo $body;
                 }
             } else {
                 $resultat = array('reponse' => "La modification est impossible. Cause possible : vous n'avez pas fourni d'identifiant.");
-                $body = json_encode($response);
+                $body = json_encode($resultat);
                 http_response_code(400);
                 header('content-type:application/json');
                 echo $body;
