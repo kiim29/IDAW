@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 03 avr. 2023 à 13:28
+-- Généré le : mer. 05 avr. 2023 à 10:01
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -159,7 +159,7 @@ INSERT INTO `repas` (`id_repas`, `id_mangeur`, `id_aliment_mange`, `qte`, `date`
 DROP TABLE IF EXISTS `sexe`;
 CREATE TABLE IF NOT EXISTS `sexe` (
   `id_sexe` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(20) NOT NULL,
+  `nom_sexe` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id_sexe`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `sexe` (
 -- Déchargement des données de la table `sexe`
 --
 
-INSERT INTO `sexe` (`id_sexe`, `nom`) VALUES
+INSERT INTO `sexe` (`id_sexe`, `nom_sexe`) VALUES
 (1, 'F'),
 (2, 'H'),
 (3, 'X');
@@ -181,7 +181,7 @@ INSERT INTO `sexe` (`id_sexe`, `nom`) VALUES
 DROP TABLE IF EXISTS `types_aliments`;
 CREATE TABLE IF NOT EXISTS `types_aliments` (
   `id_type` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(40) NOT NULL,
+  `nom_type` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `types_aliments` (
 -- Déchargement des données de la table `types_aliments`
 --
 
-INSERT INTO `types_aliments` (`id_type`, `nom`) VALUES
+INSERT INTO `types_aliments` (`id_type`, `nom_type`) VALUES
 (1, 'Féculent'),
 (2, 'Fruit'),
 (3, 'Légume'),
@@ -211,11 +211,12 @@ INSERT INTO `types_aliments` (`id_type`, `nom`) VALUES
 DROP TABLE IF EXISTS `utilisateurs`;
 CREATE TABLE IF NOT EXISTS `utilisateurs` (
   `login` varchar(50) NOT NULL,
+  `password` varchar(30) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `nom` varchar(50) NOT NULL,
   `age` int NOT NULL,
   `sexe` int DEFAULT NULL,
   `taille` float NOT NULL,
-  `poids` int NOT NULL,
+  `poids` float NOT NULL,
   `profil` int DEFAULT NULL,
   `besoins_jour` int DEFAULT NULL,
   PRIMARY KEY (`login`),
@@ -227,40 +228,40 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 -- Déchargement des données de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`login`, `nom`, `age`, `sexe`, `taille`, `poids`, `profil`, `besoins_jour`) VALUES
-('alexandre.favreau@etu.imt-lille-douai.fr', 'Alexandre', 25, 2, 1.75, 60, 1, NULL),
-('alexis.poirot@etu.imt-lille-douai.fr', 'Alexis', 25, 2, 1.75, 60, 2, NULL),
-('anaelle.ana', 'Anna', 17, 1, 1.77, 69, 4, NULL),
-('anthony.gouthier@etu.imt-lille-douai.fr', 'Anthony', 25, 2, 1.75, 60, 1, NULL),
-('antoine.lambert@etu.imt-lille-douai.fr', 'Antoine', 25, 2, 1.75, 60, 2, NULL),
-('armand.sumo@etu.imt-lille-douai.fr', 'Armand', 25, 2, 1.75, 60, 2, NULL),
-('cedric.prast@etu.imt-lille-douai.fr', 'Cédric', 25, 2, 1.75, 60, 1, NULL),
-('dan.du.35', 'Daniel', 33, 3, 1.89, 94, 3, NULL),
-('emil.perouse@etu.imt-lille-douai.fr', 'Emil', 25, 2, 1.75, 60, 3, NULL),
-('ezzat.al.zahabi@etu.imt-lille-douai.fr', 'Ezzat', 25, 2, 1.75, 60, 2, NULL),
-('gaelle.erhart@etu.imt-lille-douai.fr', 'Gaelle', 25, 1, 1.75, 60, 1, NULL),
-('guillaume.faure@etu.imt-lille-douai.fr', 'Guillaume', 25, 2, 1.75, 60, 2, NULL),
-('harry.potter', 'Henri', 37, 2, 1.74, 78, 3, NULL),
-('hatim.hebboul@etu.imt-lille-douai.fr', 'Hatim', 25, 2, 1.75, 60, 4, NULL),
-('hugo.lim@etu.imt-lille-douai.fr', 'Hugo', 25, 2, 1.75, 60, 2, NULL),
-('johan.gaudin@etu.imt-lille-douai.fr', 'Johan', 25, 2, 1.75, 60, 2, NULL),
-('julia.zink@etu.imt-lille-douai.fr', 'Julia', 25, 1, 1.75, 60, 1, NULL),
-('kanlanfaye.djamoine@etu.imt-lille-douai.fr', 'Kanlanfaye', 25, 2, 1.75, 60, 2, NULL),
-('kim.luxembourger', 'Kim', 21, 1, 1.58, 52, 1, NULL),
-('lea.grumiaux@etu.imt-lille-douai.fr', 'Léa', 25, 2, 1.75, 60, 2, NULL),
-('louis.leonard', 'Louis', 21, 2, 1.75, 70, 2, NULL),
-('louise.dupont', 'Louise', 54, 1, 1.49, 42, 4, NULL),
-('lucas.arib@etu.imt-lille-douai.fr', 'Lucas', 25, 2, 1.75, 60, 2, NULL),
-('mamie.jacques', 'Jacqueline', 78, 1, 1.47, 43, 1, NULL),
-('mathis.jolivel@etu.imt-lille-douai.fr', 'Mathis', 25, 2, 1.75, 60, 3, NULL),
-('maxime.de.veyrac@etu.imt-lille-douai.fr', 'Maxime', 25, 2, 1.75, 60, 2, NULL),
-('mekki.ben.hamidouche@etu.imt-lille-douai.fr', 'Mekki', 25, 2, 1.75, 60, 2, NULL),
-('nathan.simon', 'Nathan', 21, 2, 1.78, 73, 1, NULL),
-('nilavan.deva@etu.imt-lille-douai.fr', 'Nilavan', 25, 2, 1.75, 60, 2, NULL),
-('pierre.martin@etu.imt-lille-douai.fr', 'Pierre', 25, 2, 1.75, 60, 2, NULL),
-('sacha.sicoli@etu.imt-lille-douai.fr', 'Sacha', 25, 2, 1.75, 60, 2, NULL),
-('tanguy.feenstra@etu.imt-lille-douai.fr', 'Tanguy', 25, 2, 1.75, 60, 2, NULL),
-('william.nguyen@etu.imt-lille-douai.fr', 'William', 25, 2, 1.75, 60, 2, NULL);
+INSERT INTO `utilisateurs` (`login`, `password`, `nom`, `age`, `sexe`, `taille`, `poids`, `profil`, `besoins_jour`) VALUES
+('aa', 'aa', 'aa', 58, 3, 1.62, 53, 2, NULL),
+('alexandre.favreau@etu.imt-lille-douai.fr', NULL, 'Alexandre', 25, 2, 1.75, 60, 1, NULL),
+('alexis.poirot@etu.imt-lille-douai.fr', NULL, 'Alexis', 25, 2, 1.75, 60, 2, NULL),
+('anthony.gouthier@etu.imt-lille-douai.fr', NULL, 'Anthony', 25, 2, 1.75, 60, 1, NULL),
+('antoine.lambert@etu.imt-lille-douai.fr', NULL, 'Antoine', 25, 2, 1.75, 60, 2, NULL),
+('armand.sumo@etu.imt-lille-douai.fr', NULL, 'Armand', 25, 2, 1.75, 60, 2, NULL),
+('cedric.prast@etu.imt-lille-douai.fr', NULL, 'Cédric', 25, 2, 1.75, 60, 1, NULL),
+('dan.du.35', 'dandan', 'Daniel', 33, 3, 1.89, 94, 3, NULL),
+('emil.perouse@etu.imt-lille-douai.fr', NULL, 'Emil', 25, 2, 1.75, 60, 3, NULL),
+('ezzat.al.zahabi@etu.imt-lille-douai.fr', NULL, 'Ezzat', 25, 2, 1.75, 60, 2, NULL),
+('gaelle.erhart@etu.imt-lille-douai.fr', NULL, 'Gaelle', 25, 1, 1.75, 60, 1, NULL),
+('guillaume.faure@etu.imt-lille-douai.fr', NULL, 'Guillaume', 25, 2, 1.75, 60, 2, NULL),
+('harry.potter', NULL, 'Henri', 37, 2, 1.74, 78, 3, NULL),
+('hatim.hebboul@etu.imt-lille-douai.fr', NULL, 'Hatim', 25, 2, 1.75, 60, 4, NULL),
+('hugo.lim@etu.imt-lille-douai.fr', NULL, 'Hugo', 25, 2, 1.75, 60, 2, NULL),
+('johan.gaudin@etu.imt-lille-douai.fr', NULL, 'Johan', 25, 2, 1.75, 60, 2, NULL),
+('julia.zink@etu.imt-lille-douai.fr', NULL, 'Julia', 25, 1, 1.75, 60, 1, NULL),
+('kanlanfaye.djamoine@etu.imt-lille-douai.fr', NULL, 'Kanlanfaye', 25, 2, 1.75, 60, 2, NULL),
+('kim.luxembourger', '123123', 'Kim', 21, 1, 1.58, 52, 1, NULL),
+('lea.grumiaux@etu.imt-lille-douai.fr', NULL, 'Léa', 25, 2, 1.75, 60, 2, NULL),
+('louis.leonard', NULL, 'Louis', 21, 2, 1.75, 70, 2, NULL),
+('louise.dupont', NULL, 'Louise', 54, 1, 1.49, 42, 4, NULL),
+('lucas.arib@etu.imt-lille-douai.fr', NULL, 'Lucas', 25, 2, 1.75, 60, 2, NULL),
+('mamie.jacques', NULL, 'Jacqueline', 78, 1, 1.47, 43, 1, NULL),
+('mathis.jolivel@etu.imt-lille-douai.fr', NULL, 'Mathis', 25, 2, 1.75, 60, 3, NULL),
+('maxime.de.veyrac@etu.imt-lille-douai.fr', NULL, 'Maxime', 25, 2, 1.75, 60, 2, NULL),
+('mekki.ben.hamidouche@etu.imt-lille-douai.fr', NULL, 'Mekki', 25, 2, 1.75, 60, 2, NULL),
+('nathan.simon', NULL, 'Nathan', 21, 2, 1.78, 73, 1, NULL),
+('nilavan.deva@etu.imt-lille-douai.fr', NULL, 'Nilavan', 25, 2, 1.75, 60, 2, NULL),
+('pierre.martin@etu.imt-lille-douai.fr', NULL, 'Pierre', 25, 2, 1.75, 60, 2, NULL),
+('sacha.sicoli@etu.imt-lille-douai.fr', NULL, 'Sacha', 25, 2, 1.75, 60, 2, NULL),
+('tanguy.feenstra@etu.imt-lille-douai.fr', NULL, 'Tanguy', 25, 2, 1.75, 60, 2, NULL),
+('william.nguyen@etu.imt-lille-douai.fr', NULL, 'William', 25, 2, 1.75, 60, 2, NULL);
 
 --
 -- Contraintes pour les tables déchargées

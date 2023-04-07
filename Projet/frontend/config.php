@@ -1,2 +1,2 @@
 <?php
-define('_URL_PREFIX','http://localhost/IDAW/Projet/backend/');
+define('_URL_PREFIX','http://localhost/IDAW/Projet/');

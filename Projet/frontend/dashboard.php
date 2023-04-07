@@ -1,0 +1,1 @@
+<h1> Hello <?php session_start(); echo $_SESSION['login'] ?> !! </h1>
