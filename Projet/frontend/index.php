@@ -1,4 +1,5 @@
 <!doctype html>
+<html>
 <head>
     <script>
         let URL_PREFIX = "<?php
@@ -10,15 +11,12 @@
                 echo $_POST['login'];
             }
         ?>";
-        console.log(loginSent);
         let passwordSent = "<?php 
             if(isset($_POST['password'])){
                 echo $_POST['password'];
             }
         ?>";
-        console.log(passwordSent);
         let successfullyLogged = false;
-        console.log(successfullyLogged);
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
 </head>
@@ -43,17 +41,7 @@
 
 
 <script>
-// // if successfullyLogged redirect
-// if successfullyLogged {
-//     window.location.href = URL_PREFIX+"frontend.php/dashboard.php";
-// }
-//questions : comment passer contenus du form $_POST['login'] et $_POST['password'] en script JS ?
-// pour tester le login : ajax get vers API backend/users.php?login=loginSent&password=passwordSent
-// si api retourne vrai :successfullyLogged = true et session['login']=login et redirect
-// si api retourne  false  : rien dans le session et previent que faux
-//Requête AJAX GET pour tester les logins
-
-console.log(successfullyLogged);
+//Requête Ajax à la base pour savoir si le login/mdp envoyé est correct
 $.ajax({
     url:  URL_PREFIX + 'backend/users.php',
     method: "GET",
@@ -63,7 +51,6 @@ $.ajax({
 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
 .done(function(response){
     successfullyLogged = response['response'];
-    console.log(successfullyLogged);
     if(successfullyLogged){
         let variableInutile = "<?php 
             if(isset($_POST['login'])) {
@@ -80,3 +67,5 @@ $.ajax({
     alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
 });
 </script>
+
+</hmtl>
