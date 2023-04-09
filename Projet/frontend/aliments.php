@@ -11,9 +11,9 @@
             <div class="content">
                 <br>
                 <script>
-                    let PREFIX = "<?php
+                    let URL_PREFIX = "<?php
                         require_once('config.php');
-                        echo API_URL_PREFIX; ?>";
+                        echo _URL_PREFIX; ?>";
                 </script>
                 <table class="table" id="alimentsTable">
                     <thead>
@@ -32,12 +32,12 @@
                             <th scope="col">Suppression</th>
                         </tr>
                     </thead>
-                    <tbody id="usersTableBody">
+                    <tbody id="alimentsTableBody">
                         
                     </tbody>
                 </table>
 
-                <form id="usersForm" action="" onsubmit="onFormSubmit();">
+                <form id="alimentsForm" action="" onsubmit="onFormSubmit();">
                     <div class="form-group row">
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputID" hidden>
@@ -109,7 +109,7 @@
                     let enModif = false;
                     let table;
                     $(document).ready(function () {
-                        table = $('#usersTable').DataTable( {
+                        table = $('#alimentsTable').DataTable( {
                             ajax: { 
                                 url: URL_PREFIX + 'backend/aliments.php',
                                 dataSrc: ''
@@ -141,7 +141,7 @@
                         });
                     });
 
-                    $('#usersTable tbody').on('click', 'button', function () {
+                    $('#alimentsTable tbody').on('click', 'button', function () {
                         switch ($(this).attr('id_aliment')) {
                             case 'edit' :
                                 enModif = true;
@@ -161,7 +161,7 @@
                             case 'delete' :
                                 var tr = $(this).parents('tr');
                                 var dataDel = table.row(tr).data();
-                                var idDel = dataDel['id'];
+                                var idDel = dataDel['id_aliment'];
                                 //Requête AJAX DELETE pour supprimer
                                 $.ajax({
                                     url: URL_PREFIX + 'backend/aliments.php',
@@ -172,7 +172,7 @@
                                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                                 .done(function(response){
                                     let res = JSON.stringify(response);
-                                    $('#usersTable').DataTable().ajax.reload();
+                                    $('#alimentsTable').DataTable().ajax.reload();
                                 })
                                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                                 .fail(function(error){
@@ -185,12 +185,12 @@
                     function onFormSubmit() {
                         // prevent the form to be sent to the server
                         event.preventDefault();
-                        if(enModif && document.getElementById('inputID').value != null) { //MODIFICATION D'UN USER EXISTANT
+                        if(enModif && document.getElementById('inputID').value != null) { //MODIFICATION D'UN aliment EXISTANT
                             var idModif = document.getElementById('inputID').value;
                             var nomModif = document.getElementById('inputNom').value;
                             var typeModif = document.getElementById('inputType').value;
                             var caloriesModif = document.getElementById('inputCalories').value;
-                            var clucidesModif = document.getElementById('inputGlucides').value;
+                            var glucidesModif = document.getElementById('inputGlucides').value;
                             var sucresModif = document.getElementById('inputSucres').value;
                             var lipidesModif = document.getElementById('inputLipides').value;
                             var acidesGrasModif = document.getElementById('inputAcidesGras').value;
@@ -202,34 +202,62 @@
                                 url: URL_PREFIX + 'backend/aliments.php',
                                 method: "PUT",
                                 dataType: "json",
-                                data: JSON.stringify({id: idModif, nom: nomModif, nom_type: typeModif, })
+                                data: JSON.stringify({
+                                    id_aliment: idModif, 
+                                    nom: nomModif, 
+                                    id_type_aliment: typeModif, 
+                                    calories: caloriesModif, 
+                                    glucides: glucidesModif, 
+                                    sucres: sucresModif, 
+                                    lipides: lipidesModif, 
+                                    acides_gras: acidesGrasModif, 
+                                    proteines: proteinesModif, 
+                                    sel: selModif
+                                })
                             })
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                             .done(function(response){
                                 let res = JSON.stringify(response);
-                                document.getElementById("usersForm").reset();
-                                $('#usersTable').DataTable().ajax.reload();
+                                document.getElementById("alimentsForm").reset();
+                                $('#alimentsTable').DataTable().ajax.reload();
                             })
                             //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                             .fail(function(error){
                                 alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
                             });
-                        }else if(!(enModif)) { //AJOUT D'UN NOUVEL USER
-                            var nomNouv = document.getElementById('inputName').value;
-                            var emailNouv = document.getElementById('inputEmail').value;
+                        }else if(!(enModif)) { //AJOUT D'UN NOUVEL aliment
+                            var nomNouv = document.getElementById('inputNom').value;
+                            var typeNouv = document.getElementById('inputType').value;
+                            var caloriesNouv = document.getElementById('inputCalories').value;
+                            var glucidesNouv = document.getElementById('inputGlucides').value;
+                            var sucresNouv = document.getElementById('inputSucres').value;
+                            var lipidesNouv = document.getElementById('inputLipides').value;
+                            var acidesGrasNouv = document.getElementById('inputAcidesGras').value;
+                            var proteinesNouv = document.getElementById('inputProteines').value;
+                            var selNouv = document.getElementById('inputSel').value;
                             //Requête AJAX POST pour ajouter
                             $.ajax({
-                                url:  PREFIX + '/IDAW/TP4/exo5/users.php',
+                                url:  URL_PREFIX + 'backend/aliments.php',
                                 method: "POST",
                                 dataType : "json",
-                                data: {name: nomNouv, email: emailNouv}
+                                data: JSON.stringify({
+                                    nom: nomNouv, 
+                                    id_type_aliment: typeNouv, 
+                                    calories: caloriesNouv, 
+                                    glucides: glucidesNouv, 
+                                    sucres: sucresNouv, 
+                                    lipides: lipidesNouv, 
+                                    acides_gras: acidesGrasNouv, 
+                                    proteines: proteinesNouv, 
+                                    sel: selNouv
+                                })
                             })
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                             .done(function(response){
                                 let res = JSON.stringify(response);
-                                var idNouv = response['data']['id'];
-                                document.getElementById("usersForm").reset();
-                                $('#usersTable').DataTable().ajax.reload();
+                                var idNouv = response['data']['id_aliment'];
+                                document.getElementById("alimentsForm").reset();
+                                $('#alimentsTable').DataTable().ajax.reload();
                             })
                             //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                             .fail(function(error){
