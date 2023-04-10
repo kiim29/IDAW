@@ -7,6 +7,10 @@
 — Résultat : retourne tous les utilisateurs de la base (JSON)  
   
 ### GET /users.php  
+— Paramètres : le champ identifiant et le champ password de l'utilisateur qui nous intéresse (login : string, password : stirng)  
+— Résultat : retourne true ou false selon si l'utilisateur se trouve dans la base avec ce mot de passe ou pas (JSON) 
+
+### GET /users.php  
 — Paramètres : le champ identifiant de l'utilisateur qui nous intéresse (login : string)  
 — Résultat : retourne toutes les infos de l'utilisateur d'identifiant id (JSON)  
   
@@ -67,7 +71,7 @@ En cas d’erreur, retourne le code d’erreur de statut HTTP adapté
 — Résultat : retourne toutes les infos de l'repas d'identifiant id_repas (JSON)  
   
 ### GET /repas.php  
-— Paramètres : le champ identifiant d'un utilisateur qui nous intéresse (id_mangeur : entier)  
+— Paramètres : le champ identifiant d'un utilisateur qui nous intéresse (id_mangeur : login (string))  
 — Résultat : retourne toutes les infos de tous les repas mangé par cet utilisateur (JSON)  
   
 ### POST /repas.php  

@@ -23,10 +23,11 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 //select * from repas where id_mangeur = id_mangeur
                 $request = $pdo->prepare("select * from repas 
                 join aliments on id_aliment_mange=id_aliment
+                join types_aliments on id_type_aliment=id_type
                 join utilisateurs on id_mangeur=login
                 where id_mangeur=".$_GET['id_mangeur']);
                 $request -> execute();
-                $resultat = $request->fetch(PDO::FETCH_OBJ);
+                $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
                 $body = json_encode($resultat);
                 http_response_code(200);
                 header('content-type:application/json');

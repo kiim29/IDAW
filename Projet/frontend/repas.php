@@ -22,8 +22,11 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Aliment mangé</th>
+                            <th scope="col">Type d'aliment</th>
                             <th scope="col">Quantité</th>
                             <th scope="col">Date</th>
+                            <th scope="col">Modification</th>
+                            <th scope="col">Suppression</th>
                         </tr>
                     </thead>
                     <tbody id="repasTableBody">
@@ -81,7 +84,7 @@
                     $(document).ready(function () {
                         table = $('#repasTable').DataTable( {
                             ajax: { 
-                                url: URL_PREFIX + 'backend/repas.php?login='+login,
+                                url: URL_PREFIX + "backend/repas.php?id_mangeur='" + login + "'",
                                 dataSrc: ''
                             },
                             columns: [
