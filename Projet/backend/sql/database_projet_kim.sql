@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 05 avr. 2023 à 10:01
+-- Généré le : lun. 10 avr. 2023 à 06:52
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `aliments` (
   `sel` float DEFAULT NULL,
   PRIMARY KEY (`id_aliment`),
   KEY `id_type_aliment` (`id_type_aliment`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `aliments`
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `repas` (
   PRIMARY KEY (`id_repas`),
   KEY `id_mangeur` (`id_mangeur`),
   KEY `id_aliment_mange` (`id_aliment_mange`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `repas`
@@ -148,7 +148,10 @@ INSERT INTO `repas` (`id_repas`, `id_mangeur`, `id_aliment_mange`, `qte`, `date`
 (6, 'louis.leonard', 1, 2, '2023-03-17'),
 (7, 'louise.dupont', 5, 1, '2023-03-20'),
 (8, 'mamie.jacques', 11, 2, '2023-03-19'),
-(9, 'dan.du.35', 6, 4, '2023-03-12');
+(9, 'dan.du.35', 6, 4, '2023-03-12'),
+(10, 'luc.fabresse@imt-nord-europe.fr', 6, 200, '2023-04-08'),
+(11, 'luc.fabresse@imt-nord-europe.fr', 17, 50, '2023-04-08'),
+(12, 'luc.fabresse@imt-nord-europe.fr', 18, 70, '2023-04-07');
 
 -- --------------------------------------------------------
 
@@ -251,6 +254,7 @@ INSERT INTO `utilisateurs` (`login`, `password`, `nom`, `age`, `sexe`, `taille`,
 ('lea.grumiaux@etu.imt-lille-douai.fr', NULL, 'Léa', 25, 2, 1.75, 60, 2, NULL),
 ('louis.leonard', NULL, 'Louis', 21, 2, 1.75, 70, 2, NULL),
 ('louise.dupont', NULL, 'Louise', 54, 1, 1.49, 42, 4, NULL),
+('luc.fabresse@imt-nord-europe.fr', '123123', 'Luc Fabresse', 27, 2, 175, 65, 2, NULL),
 ('lucas.arib@etu.imt-lille-douai.fr', NULL, 'Lucas', 25, 2, 1.75, 60, 2, NULL),
 ('mamie.jacques', NULL, 'Jacqueline', 78, 1, 1.47, 43, 1, NULL),
 ('mathis.jolivel@etu.imt-lille-douai.fr', NULL, 'Mathis', 25, 2, 1.75, 60, 3, NULL),
