@@ -17,7 +17,7 @@
                     let login = "<?php
                         echo $_SESSION['login']; ?>";
                 </script>
-                <table class="table" id="alimentsTable">
+                <table class="table" id="repasTable">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -26,7 +26,7 @@
                             <th scope="col">Date</th>
                         </tr>
                     </thead>
-                    <tbody id="alimentsTableBody">
+                    <tbody id="repasTableBody">
                         
                     </tbody>
                 </table>
@@ -79,7 +79,7 @@
                     let enModif = false;
                     let table;
                     $(document).ready(function () {
-                        table = $('#alimentsTable').DataTable( {
+                        table = $('#repasTable').DataTable( {
                             ajax: { 
                                 url: URL_PREFIX + 'backend/repas.php?login='+login,
                                 dataSrc: ''
