@@ -106,7 +106,7 @@
                         });
                     });
 
-                    $('#alimentsTable tbody').on('click', 'button', function () { // TODO 
+                    $('#repasTable tbody').on('click', 'button', function () { // TODO 
                         switch ($(this).attr('id_aliment')) {
                             case 'edit' :
                                 enModif = true;
@@ -129,7 +129,7 @@
                                 var idDel = dataDel['id_aliment'];
                                 //Requête AJAX DELETE pour supprimer
                                 $.ajax({
-                                    url: URL_PREFIX + 'backend/aliments.php',
+                                    url: URL_PREFIX + 'backend/repas.php',
                                     method: "DELETE",
                                     dataType : "json",
                                     data: JSON.stringify({id_aliment: idDel})
@@ -137,7 +137,7 @@
                                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                                 .done(function(response){
                                     let res = JSON.stringify(response);
-                                    $('#alimentsTable').DataTable().ajax.reload();
+                                    $('#repasTable').DataTable().ajax.reload();
                                 })
                                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                                 .fail(function(error){
@@ -164,7 +164,7 @@
                             enModif=false;
                             //Requête AJAX PUT pour modifier
                             $.ajax({
-                                url: URL_PREFIX + 'backend/aliments.php',
+                                url: URL_PREFIX + 'backend/repas.php',
                                 method: "PUT",
                                 dataType: "json",
                                 data: JSON.stringify({
@@ -183,8 +183,8 @@
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                             .done(function(response){
                                 let res = JSON.stringify(response);
-                                document.getElementById("alimentsForm").reset();
-                                $('#alimentsTable').DataTable().ajax.reload();
+                                document.getElementById("repasForm").reset();
+                                $('#repasTable').DataTable().ajax.reload();
                             })
                             //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                             .fail(function(error){
@@ -202,7 +202,7 @@
                             var selNouv = document.getElementById('inputSel').value;
                             //Requête AJAX POST pour ajouter
                             $.ajax({
-                                url:  URL_PREFIX + 'backend/aliments.php',
+                                url:  URL_PREFIX + 'backend/repas.php',
                                 method: "POST",
                                 dataType : "json",
                                 data: JSON.stringify({
@@ -221,8 +221,8 @@
                             .done(function(response){
                                 let res = JSON.stringify(response);
                                 var idNouv = response['data']['id_aliment'];
-                                document.getElementById("alimentsForm").reset();
-                                $('#alimentsTable').DataTable().ajax.reload();
+                                document.getElementById("repasForm").reset();
+                                $('#repasTable').DataTable().ajax.reload();
                             })
                             //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                             .fail(function(error){
