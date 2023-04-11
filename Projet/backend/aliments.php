@@ -46,8 +46,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
         case 'POST' :
             if (isset($_POST['nom']) && isset($_POST['id_type_aliment'])) {
                 //insert into aliments (nom, id_type_aliment,...) values (nom, id_type_aliment,...)
-                $request = $pdo->prepare("INSERT INTO `aliments` (nom,id_type_aliment,calories,glucides,sucres,lipides,acides_gras,proteines,sel) 
-                VALUES ('".$_POST['nom']."','".$_POST['id_type_aliment']."','".$_POST['calories']."','".$_POST['glucides']."','".$_POST['sucres']."','".$_POST['lipides']."','".$_POST['acides_gras']."','".$_POST['proteines']."','".$_POST['sel']."')");
+                $request = $pdo->prepare("INSERT INTO `aliments` (nom,id_type_aliment,calories,glucides,sucres,lipides,acides_gras,proteines,sel) VALUES ('".$_POST['nom']."','".$_POST['id_type_aliment']."','".$_POST['calories']."','".$_POST['glucides']."','".$_POST['sucres']."','".$_POST['lipides']."','".$_POST['acides_gras']."','".$_POST['proteines']."','".$_POST['sel']."')");
                 $request -> execute();
                 //select id_aliment from aliments where nom=nom and id_type_aliment=id_type_aliment --> Nouvelle location
                 $request = $pdo->prepare("select * from `aliments` where nom='".$_POST['nom']."' and id_type_aliment='".$_POST['id_type_aliment']."'");

@@ -142,7 +142,7 @@
                     });
 
                     $('#alimentsTable tbody').on('click', 'button', function () {
-                        switch ($(this).attr('id_aliment')) {
+                        switch ($(this).attr('id')) {
                             case 'edit' :
                                 enModif = true;
                                 var data = table.row($(this).parents('tr')).data();
@@ -240,7 +240,7 @@
                                 url:  URL_PREFIX + 'backend/aliments.php',
                                 method: "POST",
                                 dataType : "json",
-                                data: JSON.stringify({
+                                data: {
                                     nom: nomNouv, 
                                     id_type_aliment: typeNouv, 
                                     calories: caloriesNouv, 
@@ -250,7 +250,7 @@
                                     acides_gras: acidesGrasNouv, 
                                     proteines: proteinesNouv, 
                                     sel: selNouv
-                                })
+                                }
                             })
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                             .done(function(response){
@@ -261,7 +261,7 @@
                             })
                             //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                             .fail(function(error){
-                                alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+                                alert("La requête d'ajout s'est terminée en échec. Infos : " + JSON.stringify(error));
                             });
                         }
                     }
