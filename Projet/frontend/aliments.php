@@ -49,50 +49,65 @@
                             <input type="text" class="form-control" id="inputNom" >
                         </div>
                     </div>
-                    <div class="form-group row"> <!--TODO : liste déroulante -->
+                    <div class="form-group row"> <!-- TODO : liste déroulante -->
                         <label for="inputType" class="col-sm-2 col-form-label">Type</label>
-                        <div class="col-sm-3">
+                        <br/>
+                        <select id="inputType">
+                            <option value=0></option>
+                            <option value=1>Féculent</option>
+                            <option value=2>Fruit</option>
+                            <option value=3>Légume</option>
+                            <option value=4>Viande</option>
+                            <option value=5>Poisson</option>
+                            <option value=6>Autres protéines</option>
+                            <option value=7>Laitage</option>
+                            <option value=8>Sucreries</option>
+                            <option value=9>Dessert</option>
+                            <option value=10>Plats composés</option>
+                            <option value=11>Autre</option>
+                        </select>
+                        <!-- <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputType" >
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-group row">
-                        <label for="inputCalories" class="col-sm-2 col-form-label">Calories</label>
+                        <label for="inputCalories" class="col-sm-2 col-form-label">Calories (en kcal)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputCalories" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputGlucides" class="col-sm-2 col-form-label">Glucides</label>
+                        <label for="inputGlucides" class="col-sm-2 col-form-label">Glucides (en g par 100 g)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputGlucides" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputSucres" class="col-sm-2 col-form-label">Dont sucres</label>
+                        <label for="inputSucres" class="col-sm-2 col-form-label">Dont sucres (en g par 100 g)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputSucres" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputLipides" class="col-sm-2 col-form-label">Lipides</label>
+                        <label for="inputLipides" class="col-sm-2 col-form-label">Lipides (en g par 100 g)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputLipides" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputAcidesGras" class="col-sm-2 col-form-label">Dont acides gras saturés</label>
+                        <label for="inputAcidesGras" class="col-sm-2 col-form-label">Dont acides gras saturés (en g par 100 g)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputAcidesGras" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputProteines" class="col-sm-2 col-form-label">Protéines</label>
+                        <label for="inputProteines" class="col-sm-2 col-form-label">Protéines (en g par 100 g)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputProteines" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputSel" class="col-sm-2 col-form-label">Sel</label>
+                        <label for="inputSel" class="col-sm-2 col-form-label">Sel (en g par 100 g)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputSel" >
                         </div>
@@ -141,6 +156,8 @@
                         });
                     });
 
+                    let idsFromTypeNames = {'Féculent':1, 'Fruit':2, 'Légume':3, 'Viande':4, 'Poisson':5, 'Autres protéines':6, 'Laitage':7, 'Sucreries':8, 'Dessert':9, 'Plats composés':10, 'Autre':11};
+
                     $('#alimentsTable tbody').on('click', 'button', function () {
                         switch ($(this).attr('id')) {
                             case 'edit' :
@@ -148,7 +165,8 @@
                                 var data = table.row($(this).parents('tr')).data();
                                 document.getElementById('inputID').value = data['id_aliment'];
                                 document.getElementById('inputNom').value = data['nom'];
-                                document.getElementById('inputType').value = data['nom_type'];
+                                console.log(idsFromTypeNames[data['nom_type']]);
+                                document.getElementById('inputType').value = idsFromTypeNames[data['nom_type']];
                                 document.getElementById('inputCalories').value = data['calories'];
                                 document.getElementById('inputGlucides').value = data['glucides'];
                                 document.getElementById('inputSucres').value = data['sucres'];

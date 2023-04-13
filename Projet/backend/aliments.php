@@ -78,7 +78,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 if (isset($old_values['id_aliment'])) { //si l'aliment d'id_aliment=id_aliment est bien présent dans la base
                     //update aliments set nom = nom, type = type... where id_aliment = id_aliment --> Modif et Nouvelles valeurs
                     $request = $pdo->prepare("UPDATE `aliments` 
-                    SET `nom`='".$output['nom']."', `id_type_aliment`='".$output['id_type_aliment']."', `calories`='".$output['calories']."', `glucides`='".$output['glucides']."', `sucres`='".$output['sucres']."' `lipides`='".$output['lipides']."' `acides_gras`='".$output['acides_gras']."' `proteines`='".$output['proteines']."' `sel`='".$output['sel']."' 
+                    SET `nom`='".$output['nom']."', `id_type_aliment`='".$output['id_type_aliment']."', `calories`='".$output['calories']."', `glucides`='".$output['glucides']."', `sucres`='".$output['sucres']."', `lipides`='".$output['lipides']."', `acides_gras`='".$output['acides_gras']."', `proteines`='".$output['proteines']."', `sel`='".$output['sel']."' 
                     WHERE `id_aliment`='".$output['id_aliment']."'");
                     $request -> execute();
                     $request = $pdo->prepare("select * from `aliments` where id_aliment='".$old_values['id_aliment']."'");
