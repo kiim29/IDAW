@@ -10,12 +10,18 @@ header{
     background-color:rgb(82, 147, 193);
     height: 85%;
     width: fit-content;
-    margin-right: 10%;
+    margin-right: 5%;
     align-self: center;
 }
 #titleheader{
     align-self: center;
     margin-left: 10%;
+    padding-top: 5%;
+    font-weight: initial;
+}
+#secondtitle{
+    margin-left: 8%;
+    padding-top: 5%;
 }
 
 .imgbox{

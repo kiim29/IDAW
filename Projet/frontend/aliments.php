@@ -15,7 +15,7 @@
                         require_once('config.php');
                         echo _URL_PREFIX; ?>";
                 </script>
-                <table class="table" id="alimentsTable">
+                <table class="table table-striped table-bordered" id="alimentsTable">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -131,7 +131,7 @@
                             },
                             columns: [
                                 { data: 'id_aliment' },
-                                { data: 'nom' },
+                                { data: 'nom_aliment' },
                                 { data: 'nom_type' },
                                 { data: 'calories' },
                                 { data: 'glucides' },
@@ -164,8 +164,7 @@
                                 enModif = true;
                                 var data = table.row($(this).parents('tr')).data();
                                 document.getElementById('inputID').value = data['id_aliment'];
-                                document.getElementById('inputNom').value = data['nom'];
-                                console.log(idsFromTypeNames[data['nom_type']]);
+                                document.getElementById('inputNom').value = data['nom_aliment'];
                                 document.getElementById('inputType').value = idsFromTypeNames[data['nom_type']];
                                 document.getElementById('inputCalories').value = data['calories'];
                                 document.getElementById('inputGlucides').value = data['glucides'];
@@ -222,7 +221,7 @@
                                 dataType: "json",
                                 data: JSON.stringify({
                                     id_aliment: idModif, 
-                                    nom: nomModif, 
+                                    nom_aliment: nomModif, 
                                     id_type_aliment: typeModif, 
                                     calories: caloriesModif, 
                                     glucides: glucidesModif, 
@@ -259,7 +258,7 @@
                                 method: "POST",
                                 dataType : "json",
                                 data: {
-                                    nom: nomNouv, 
+                                    nom_aliment: nomNouv, 
                                     id_type_aliment: typeNouv, 
                                     calories: caloriesNouv, 
                                     glucides: glucidesNouv, 

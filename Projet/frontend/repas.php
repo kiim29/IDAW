@@ -17,7 +17,7 @@
                     let login = "<?php
                         echo $_SESSION['login']; ?>";
                 </script>
-                <table class="table" id="repasTable">
+                <table id="repasTable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -27,6 +27,7 @@
                             <th scope="col">Date</th>
                             <th scope="col">Modification</th>
                             <th scope="col">Suppression</th>
+                            <th scope="col">ID de l'aliment mangé</th>
                         </tr>
                     </thead>
                     <tbody id="repasTableBody">
@@ -37,35 +38,24 @@
                 <form id="repasForm" action="" onsubmit="onFormSubmit();">
                     <div class="form-group row">
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputID" hidden>
+                            <input type="text" class="form-control" id="inputIDRepas" hidden>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputAliment" class="col-sm-2 col-form-label">Aliment</label>
+                        <label for="inputAliment" class="col-sm-2 col-form-label">Aliment mangé</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputAliment" >
-                        </div>
-                    </div>
-                    <div class="form-group row"> <!--TODO : liste déroulante -->
-                        <label for="inputType" class="col-sm-2 col-form-label">Type</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputType" >
+                            <select class="form-control" id="inputAliment" required>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputQte" class="col-sm-2 col-form-label">Quantité (en grammes)</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputCalories" >
+                            <input type="text" class="form-control" id="inputQte" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputGlucides" class="col-sm-2 col-form-label">inputQte</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputGlucides" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
+                        <label for="inputDate" class="col-sm-2 col-form-label">Date (AAAA-MM-JJ)</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputDate" >
                         </div>
@@ -89,12 +79,13 @@
                             },
                             columns: [
                                 { data: 'id_repas' },
-                                { data: 'nom' },
+                                { data: 'nom_aliment' },
                                 { data: 'nom_type' },
                                 { data: 'qte' },
                                 { data: 'date' },
                                 { data: null },
-                                { data: null }
+                                { data: null },
+                                { data: 'id_aliment' }
                             ],
                             columnDefs: [ 
                                 {orderable: false,
@@ -104,43 +95,61 @@
                                 {orderable: false,
                                 targets: 6,
                                 data: null,
-                                defaultContent: '<button id=delete>Delete</button>'}
+                                defaultContent: '<button id=delete>Delete</button>'},
+                                {targets: 7,
+                                visible: false}
                             ]
+                        });
+                        //Requête AJAX GET pour récupérer la liste des aliments possibles
+                        $.ajax({
+                            url: URL_PREFIX + 'backend/aliments.php',
+                            method: "GET",
+                            dataType : "json"
+                        })
+                        //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
+                        .done(function(response){
+                            let html = '<option value="-1">Sélectionnez un aliment</option>';
+                            for (var i = 0; i < response.length; i++) {  
+                                html += '<option value="' + response[i].id_aliment + '">' + response[i].nom_aliment + '</option>';  
+                            }  
+                            $("#inputAliment").html(html);
+                        })
+                        //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
+                        .fail(function(error){
+                            alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
                         });
                     });
 
                     $('#repasTable tbody').on('click', 'button', function () { // TODO 
-                        switch ($(this).attr('id_aliment')) {
+                        switch ($(this).attr('id')) {
                             case 'edit' :
+                                console.log("bvk111111fjk");
                                 enModif = true;
                                 var data = table.row($(this).parents('tr')).data();
-                                document.getElementById('inputID').value = data['id_aliment'];
-                                document.getElementById('inputNom').value = data['nom'];
-                                document.getElementById('inputType').value = data['nom_type'];
-                                document.getElementById('inputCalories').value = data['calories'];
-                                document.getElementById('inputGlucides').value = data['glucides'];
-                                document.getElementById('inputSucres').value = data['sucres'];
-                                document.getElementById('inputLipides').value = data['lipides'];
-                                document.getElementById('inputAcidesGras').value = data['acides_gras'];
-                                document.getElementById('inputProteines').value = data['proteines'];
-                                document.getElementById('inputSel').value = data['sel'];
+                                document.getElementById('inputIDRepas').value = data['id_repas'];
+                                document.getElementById('inputAliment').value = data['id_aliment'];
+                                document.getElementById('inputQte').value = data['qte'];
+                                document.getElementById('inûtDate').value = data['date'];
                             break;
 
                             case 'delete' :
+                                console.log("bvkfjk");
                                 var tr = $(this).parents('tr');
                                 var dataDel = table.row(tr).data();
-                                var idDel = dataDel['id_aliment'];
+                                var idDel = dataDel['id_repas'];
+                                console.log("dataDel");
                                 //Requête AJAX DELETE pour supprimer
                                 $.ajax({
                                     url: URL_PREFIX + 'backend/repas.php',
                                     method: "DELETE",
                                     dataType : "json",
-                                    data: JSON.stringify({id_aliment: idDel})
+                                    data: JSON.stringify({id_repas: idDel})
                                 })
                                 //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                                 .done(function(response){
                                     let res = JSON.stringify(response);
                                     $('#repasTable').DataTable().ajax.reload();
+                                    console.log("ouiii");
                                 })
                                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                                 .fail(function(error){
@@ -153,17 +162,12 @@
                     function onFormSubmit() {
                         // prevent the form to be sent to the server
                         event.preventDefault();
-                        if(enModif && document.getElementById('inputID').value != null) { //MODIFICATION D'UN aliment EXISTANT
-                            var idModif = document.getElementById('inputID').value;
-                            var nomModif = document.getElementById('inputNom').value;
-                            var typeModif = document.getElementById('inputType').value;
-                            var caloriesModif = document.getElementById('inputCalories').value;
-                            var glucidesModif = document.getElementById('inputGlucides').value;
-                            var sucresModif = document.getElementById('inputSucres').value;
-                            var lipidesModif = document.getElementById('inputLipides').value;
-                            var acidesGrasModif = document.getElementById('inputAcidesGras').value;
-                            var proteinesModif = document.getElementById('inputProteines').value;
-                            var selModif = document.getElementById('inputSel').value;
+                        if(enModif && document.getElementById('inputIDRepas').value != null) { //MODIFICATION D'UN aliment EXISTANT
+                            var idRepasModif = document.getElementById('inputIDRepas').value;
+                            var idMangeurModif = login;
+                            var idAlimentModif = document.getElementById('inputAliment').value;
+                            var qteModif = document.getElementById('inputQte').value;
+                            var dateModif = document.getElementById('inputDate').value;
                             enModif=false;
                             //Requête AJAX PUT pour modifier
                             $.ajax({
@@ -171,16 +175,11 @@
                                 method: "PUT",
                                 dataType: "json",
                                 data: JSON.stringify({
-                                    id_aliment: idModif, 
-                                    nom: nomModif, 
-                                    id_type_aliment: typeModif, 
-                                    calories: caloriesModif, 
-                                    glucides: glucidesModif, 
-                                    sucres: sucresModif, 
-                                    lipides: lipidesModif, 
-                                    acides_gras: acidesGrasModif, 
-                                    proteines: proteinesModif, 
-                                    sel: selModif
+                                    id_repas: idRepasModif,
+                                    id_mangeur: idMangeurModif, 
+                                    id_aliment_mange: idAlimentModif, 
+                                    qte: qteModif, 
+                                    date: dateModif
                                 })
                             })
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
@@ -193,37 +192,27 @@
                             .fail(function(error){
                                 alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
                             });
-                        }else if(!(enModif)) { //AJOUT D'UN NOUVEL aliment
-                            var nomNouv = document.getElementById('inputNom').value;
-                            var typeNouv = document.getElementById('inputType').value;
-                            var caloriesNouv = document.getElementById('inputCalories').value;
-                            var glucidesNouv = document.getElementById('inputGlucides').value;
-                            var sucresNouv = document.getElementById('inputSucres').value;
-                            var lipidesNouv = document.getElementById('inputLipides').value;
-                            var acidesGrasNouv = document.getElementById('inputAcidesGras').value;
-                            var proteinesNouv = document.getElementById('inputProteines').value;
-                            var selNouv = document.getElementById('inputSel').value;
+                        }else if(!(enModif)) { //AJOUT D'UN NOUVEAU REPAS
+                            var idMangeurNouv = login;
+                            var idAlimentNouv = document.getElementById('inputAliment').value;
+                            var qteNouv = document.getElementById('inputQte').value;
+                            var dateNouv = document.getElementById('inputDate').value;
                             //Requête AJAX POST pour ajouter
                             $.ajax({
                                 url:  URL_PREFIX + 'backend/repas.php',
                                 method: "POST",
                                 dataType : "json",
-                                data: JSON.stringify({
-                                    nom: nomNouv, 
-                                    id_type_aliment: typeNouv, 
-                                    calories: caloriesNouv, 
-                                    glucides: glucidesNouv, 
-                                    sucres: sucresNouv, 
-                                    lipides: lipidesNouv, 
-                                    acides_gras: acidesGrasNouv, 
-                                    proteines: proteinesNouv, 
-                                    sel: selNouv
-                                })
+                                data: {
+                                    id_mangeur: idMangeurNouv, 
+                                    id_aliment_mange: idAlimentNouv, 
+                                    qte: qteNouv, 
+                                    date: dateNouv
+                                }
                             })
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                             .done(function(response){
                                 let res = JSON.stringify(response);
-                                var idNouv = response['data']['id_aliment'];
+                                var idNouv = response['data']['id_repas'];
                                 document.getElementById("repasForm").reset();
                                 $('#repasTable').DataTable().ajax.reload();
                             })
