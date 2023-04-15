@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 10 avr. 2023 à 06:52
+-- Généré le : sam. 15 avr. 2023 à 18:57
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `aliments`;
 CREATE TABLE IF NOT EXISTS `aliments` (
   `id_aliment` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(40) NOT NULL,
+  `nom_aliment` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `id_type_aliment` int NOT NULL,
   `calories` int DEFAULT NULL,
   `glucides` float DEFAULT NULL,
@@ -41,13 +41,13 @@ CREATE TABLE IF NOT EXISTS `aliments` (
   `sel` float DEFAULT NULL,
   PRIMARY KEY (`id_aliment`),
   KEY `id_type_aliment` (`id_type_aliment`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `aliments`
 --
 
-INSERT INTO `aliments` (`id_aliment`, `nom`, `id_type_aliment`, `calories`, `glucides`, `sucres`, `lipides`, `acides_gras`, `proteines`, `sel`) VALUES
+INSERT INTO `aliments` (`id_aliment`, `nom_aliment`, `id_type_aliment`, `calories`, `glucides`, `sucres`, `lipides`, `acides_gras`, `proteines`, `sel`) VALUES
 (1, 'Pain de mie', 1, 219, 40, 6.1, 3.6, 0.3, 5.5, 0.87),
 (2, 'Cacao en poudre', 8, 151, 20.6, 20.1, 3.7, 2.3, 7.5, 0.3),
 (3, 'Céréales Lion', 8, 123, 22.2, 7.5, 2.3, 1, 2.4, 0.15),
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `repas` (
   PRIMARY KEY (`id_repas`),
   KEY `id_mangeur` (`id_mangeur`),
   KEY `id_aliment_mange` (`id_aliment_mange`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `repas`
@@ -151,7 +151,11 @@ INSERT INTO `repas` (`id_repas`, `id_mangeur`, `id_aliment_mange`, `qte`, `date`
 (9, 'dan.du.35', 6, 4, '2023-03-12'),
 (10, 'luc.fabresse@imt-nord-europe.fr', 6, 200, '2023-04-08'),
 (11, 'luc.fabresse@imt-nord-europe.fr', 17, 50, '2023-04-08'),
-(12, 'luc.fabresse@imt-nord-europe.fr', 18, 70, '2023-04-07');
+(12, 'luc.fabresse@imt-nord-europe.fr', 18, 70, '2023-04-07'),
+(13, 'aa', 18, 200, '2023-04-10'),
+(14, 'aa', 16, 85, '0000-00-00'),
+(16, 'aa', 5, 150, '2023-04-03'),
+(20, 'aa', 19, 45, '2023-04-04');
 
 -- --------------------------------------------------------
 
@@ -232,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`login`, `password`, `nom`, `age`, `sexe`, `taille`, `poids`, `profil`, `besoins_jour`) VALUES
-('aa', 'aa', 'aa', 58, 3, 1.62, 53, 2, NULL),
+('aa', 'aa', 'aa', 34, 3, 1.62, 57, 2, NULL),
 ('alexandre.favreau@etu.imt-lille-douai.fr', NULL, 'Alexandre', 25, 2, 1.75, 60, 1, NULL),
 ('alexis.poirot@etu.imt-lille-douai.fr', NULL, 'Alexis', 25, 2, 1.75, 60, 2, NULL),
 ('anthony.gouthier@etu.imt-lille-douai.fr', NULL, 'Anthony', 25, 2, 1.75, 60, 1, NULL),
@@ -254,7 +258,7 @@ INSERT INTO `utilisateurs` (`login`, `password`, `nom`, `age`, `sexe`, `taille`,
 ('lea.grumiaux@etu.imt-lille-douai.fr', NULL, 'Léa', 25, 2, 1.75, 60, 2, NULL),
 ('louis.leonard', NULL, 'Louis', 21, 2, 1.75, 70, 2, NULL),
 ('louise.dupont', NULL, 'Louise', 54, 1, 1.49, 42, 4, NULL),
-('luc.fabresse@imt-nord-europe.fr', '123123', 'Luc Fabresse', 27, 2, 175, 65, 2, NULL),
+('luc.fabresse@imt-nord-europe.fr', '123123', 'Luc Fabresse', 27, 2, 1.75, 65, 2, NULL),
 ('lucas.arib@etu.imt-lille-douai.fr', NULL, 'Lucas', 25, 2, 1.75, 60, 2, NULL),
 ('mamie.jacques', NULL, 'Jacqueline', 78, 1, 1.47, 43, 1, NULL),
 ('mathis.jolivel@etu.imt-lille-douai.fr', NULL, 'Mathis', 25, 2, 1.75, 60, 3, NULL),

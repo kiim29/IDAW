@@ -17,6 +17,7 @@
                     let login = "<?php
                         echo $_SESSION['login']; ?>";
                 </script>
+                <h3>Liste de vos repas</h3>
                 <table id="repasTable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
@@ -31,10 +32,12 @@
                         </tr>
                     </thead>
                     <tbody id="repasTableBody">
-                        
                     </tbody>
                 </table>
-
+                </br>
+                </br>
+                <h3>Formulaire d'ajout ou de modification</h3>
+                <h4>Pour ajouter un nouveau repas, remplissez le form et appuyez sur "Enregistrer"</h4>
                 <form id="repasForm" action="" onsubmit="onFormSubmit();">
                     <div class="form-group row">
                         <div class="col-sm-3">
@@ -63,7 +66,7 @@
                     <div class="form-group row">
                         <span class="col-sm-2"></span>
                         <div class="col-sm-2">
-                            <button type="submit" class="btn btn-primary form-control">Submit</button>
+                            <button type="submit" class="btn btn-primary form-control">Enregistrer</button>
                         </div>
                     </div>
                 </form>
@@ -123,21 +126,18 @@
                     $('#repasTable tbody').on('click', 'button', function () { // TODO 
                         switch ($(this).attr('id')) {
                             case 'edit' :
-                                console.log("bvk111111fjk");
                                 enModif = true;
                                 var data = table.row($(this).parents('tr')).data();
                                 document.getElementById('inputIDRepas').value = data['id_repas'];
                                 document.getElementById('inputAliment').value = data['id_aliment'];
                                 document.getElementById('inputQte').value = data['qte'];
-                                document.getElementById('inûtDate').value = data['date'];
+                                document.getElementById('inputDate').value = data['date'];
                             break;
 
                             case 'delete' :
-                                console.log("bvkfjk");
                                 var tr = $(this).parents('tr');
                                 var dataDel = table.row(tr).data();
                                 var idDel = dataDel['id_repas'];
-                                console.log("dataDel");
                                 //Requête AJAX DELETE pour supprimer
                                 $.ajax({
                                     url: URL_PREFIX + 'backend/repas.php',
@@ -149,7 +149,6 @@
                                 .done(function(response){
                                     let res = JSON.stringify(response);
                                     $('#repasTable').DataTable().ajax.reload();
-                                    console.log("ouiii");
                                 })
                                 //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                                 .fail(function(error){

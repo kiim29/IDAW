@@ -15,6 +15,7 @@
                         require_once('config.php');
                         echo _URL_PREFIX; ?>";
                 </script>
+                <h3>Liste des aliments</h3>
                 <table class="table table-striped table-bordered" id="alimentsTable">
                     <thead>
                         <tr>
@@ -33,10 +34,12 @@
                         </tr>
                     </thead>
                     <tbody id="alimentsTableBody">
-                        
                     </tbody>
                 </table>
-
+                </br>
+                </br>
+                <h3>Formulaire d'ajout ou de modification d'un aliment</h3>
+                <h4>Pour ajouter un nouvel aliment, remplissez le form et appuyez sur "Enregistrer"</h4>
                 <form id="alimentsForm" action="" onsubmit="onFormSubmit();">
                     <div class="form-group row">
                         <div class="col-sm-3">
@@ -51,24 +54,23 @@
                     </div>
                     <div class="form-group row"> <!-- TODO : liste déroulante -->
                         <label for="inputType" class="col-sm-2 col-form-label">Type</label>
-                        <br/>
-                        <select id="inputType">
-                            <option value=0></option>
-                            <option value=1>Féculent</option>
-                            <option value=2>Fruit</option>
-                            <option value=3>Légume</option>
-                            <option value=4>Viande</option>
-                            <option value=5>Poisson</option>
-                            <option value=6>Autres protéines</option>
-                            <option value=7>Laitage</option>
-                            <option value=8>Sucreries</option>
-                            <option value=9>Dessert</option>
-                            <option value=10>Plats composés</option>
-                            <option value=11>Autre</option>
-                        </select>
-                        <!-- <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputType" >
-                        </div> -->
+                        <div class="col-sm-3">
+                            <select id="inputType">
+                                <option value=0></option>
+                                <option value=1>Féculent</option>
+                                <option value=2>Fruit</option>
+                                <option value=3>Légume</option>
+                                <option value=4>Viande</option>
+                                <option value=5>Poisson</option>
+                                <option value=6>Autres protéines</option>
+                                <option value=7>Laitage</option>
+                                <option value=8>Sucreries</option>
+                                <option value=9>Dessert</option>
+                                <option value=10>Plats composés</option>
+                                <option value=11>Autre</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="inputType" > -->
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputCalories" class="col-sm-2 col-form-label">Calories (en kcal)</label>
@@ -115,7 +117,7 @@
                     <div class="form-group row">
                         <span class="col-sm-2"></span>
                         <div class="col-sm-2">
-                            <button type="submit" class="btn btn-primary form-control">Submit</button>
+                            <button type="submit" class="btn btn-primary form-control">Enregistrer</button>
                         </div>
                     </div>
                 </form>

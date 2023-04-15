@@ -6,7 +6,7 @@
         <div class="bigcontent">
             <?php
                 require_once('template_menu.php');
-                renderMenuToHTML('aliments');
+                renderMenuToHTML('profil');
             ?>
             <div class="content">
                 <br>
@@ -14,66 +14,69 @@
                     let URL_PREFIX = "<?php
                         require_once('config.php');
                         echo _URL_PREFIX; ?>";
+                    let login = "<?php
+                        echo $_SESSION['login']; ?>";
                 </script>
 
-                <form id="alimentsForm" action="" onsubmit="onFormSubmit();">
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputID" hidden>
-                        </div>
-                    </div>
+                <h3>Formulaire de modification de vos informations</h3>
+                <form id="userForm" action="" onsubmit="onFormSubmit();">
                     <div class="form-group row">
                         <label for="inputNom" class="col-sm-2 col-form-label">Nom</label>
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="inputNom" >
                         </div>
                     </div>
-                    <div class="form-group row"> <!--TODO : liste déroulante -->
-                        <label for="inputType" class="col-sm-2 col-form-label">Type</label>
+                    <div class="form-group row">
+                        <label for="inputLogin" class="col-sm-2 col-form-label">Login</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputType" >
+                            <input type="text" class="form-control" id="inputLogin" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputCalories" class="col-sm-2 col-form-label">Calories</label>
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Mot de passe</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputCalories" >
+                            <input type="text" class="form-control" id="inputPassword" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputGlucides" class="col-sm-2 col-form-label">Glucides</label>
+                        <label for="inputAge" class="col-sm-2 col-form-label">Age (en années)</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputGlucides" >
+                            <input type="text" class="form-control" id="inputAge" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputSucres" class="col-sm-2 col-form-label">Dont sucres</label>
+                        <label for="inputSexe" class="col-sm-2 col-form-label">Sexe</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputSucres" >
+                            <select id="inputSexe">
+                                <option value=1>F</option>
+                                <option value=2>H</option>
+                                <option value=3>X</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="inputSexe" > -->
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputLipides" class="col-sm-2 col-form-label">Lipides</label>
+                        <label for="inputTaille" class="col-sm-2 col-form-label">Taille (en mètres)</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputLipides" >
+                            <input type="text" class="form-control" id="inputTaille" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputAcidesGras" class="col-sm-2 col-form-label">Dont acides gras saturés</label>
+                        <label for="inputPoids" class="col-sm-2 col-form-label">Poids (en kilos)</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputAcidesGras" >
+                            <input type="text" class="form-control" id="inputPoids" >
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputProteines" class="col-sm-2 col-form-label">Protéines</label>
+                        <label for="inputProfil" class="col-sm-2 col-form-label">Profil sportif</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputProteines" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="inputSel" class="col-sm-2 col-form-label">Sel</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="inputSel" >
+                            <select id="inputProfil">
+                                <option value=1>Sédentaire</option>
+                                <option value=2>Actif</option>
+                                <option value=3>Très actif</option>
+                                <option value=3>Athlète</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="inputProfil" > -->
                         </div>
                     </div>
                     <div class="form-group row">
@@ -85,86 +88,63 @@
                 </form>
 
                 <script>
-                    let enModif = false;
                     $(document).ready(function () {
+                        //Requête AJAX GET pour récupérer les infos sur l'user de login : login
+                        $.ajax({
+                            url: URL_PREFIX + "backend/users.php?login="+login,
+                            method: "GET",
+                            dataType : "json"
+                        })
+                        //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
+                        .done(function(response){
+                            document.getElementById('inputNom').value = response['nom'];
+                            document.getElementById('inputLogin').value = response['login'];
+                            document.getElementById('inputPassword').value = response['password'];
+                            document.getElementById('inputAge').value = response['age'];
+                            document.getElementById('inputSexe').value = response['id_sexe'];
+                            document.getElementById('inputTaille').value = response['taille'];
+                            document.getElementById('inputPoids').value = response['poids'];
+                            document.getElementById('inputProfil').value = response['id_profil'];
+                        })
+                        //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
+                        .fail(function(error){
+                            alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
+                        });
                     });
                     
                     function onFormSubmit() {
                         // prevent the form to be sent to the server
                         event.preventDefault();
-                        if(enModif && document.getElementById('inputID').value != null) { //MODIFICATION D'UN aliment EXISTANT
-                            var idModif = document.getElementById('inputID').value;
+                        if(document.getElementById('inputLogin').value != null) { //MODIFICATION D'UN user EXISTANT
                             var nomModif = document.getElementById('inputNom').value;
-                            var typeModif = document.getElementById('inputType').value;
-                            var caloriesModif = document.getElementById('inputCalories').value;
-                            var glucidesModif = document.getElementById('inputGlucides').value;
-                            var sucresModif = document.getElementById('inputSucres').value;
-                            var lipidesModif = document.getElementById('inputLipides').value;
-                            var acidesGrasModif = document.getElementById('inputAcidesGras').value;
-                            var proteinesModif = document.getElementById('inputProteines').value;
-                            var selModif = document.getElementById('inputSel').value;
+                            var loginModif = document.getElementById('inputLogin').value;
+                            var passwordModif = document.getElementById('inputPassword').value;
+                            var ageModif = document.getElementById('inputAge').value;
+                            var sexeModif = document.getElementById('inputSexe').value;
+                            var tailleModif = document.getElementById('inputTaille').value;
+                            var poidsModif = document.getElementById('inputPoids').value;
+                            var profilModif = document.getElementById('inputProfil').value;
                             enModif=false;
                             //Requête AJAX PUT pour modifier
                             $.ajax({
-                                url: URL_PREFIX + 'backend/aliments.php',
+                                url: URL_PREFIX + 'backend/users.php',
                                 method: "PUT",
                                 dataType: "json",
                                 data: JSON.stringify({
-                                    id_aliment: idModif, 
                                     nom: nomModif, 
-                                    id_type_aliment: typeModif, 
-                                    calories: caloriesModif, 
-                                    glucides: glucidesModif, 
-                                    sucres: sucresModif, 
-                                    lipides: lipidesModif, 
-                                    acides_gras: acidesGrasModif, 
-                                    proteines: proteinesModif, 
-                                    sel: selModif
+                                    login: loginModif, 
+                                    password: passwordModif, 
+                                    age: ageModif, 
+                                    sexe: sexeModif, 
+                                    taille: tailleModif, 
+                                    poids: poidsModif, 
+                                    profil: profilModif
                                 })
                             })
                             //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
                             .done(function(response){
                                 let res = JSON.stringify(response);
-                                document.getElementById("alimentsForm").reset();
-                                $('#alimentsTable').DataTable().ajax.reload();
-                            })
-                            //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
-                            .fail(function(error){
-                                alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));
-                            });
-                        }else if(!(enModif)) { //AJOUT D'UN NOUVEL aliment
-                            var nomNouv = document.getElementById('inputNom').value;
-                            var typeNouv = document.getElementById('inputType').value;
-                            var caloriesNouv = document.getElementById('inputCalories').value;
-                            var glucidesNouv = document.getElementById('inputGlucides').value;
-                            var sucresNouv = document.getElementById('inputSucres').value;
-                            var lipidesNouv = document.getElementById('inputLipides').value;
-                            var acidesGrasNouv = document.getElementById('inputAcidesGras').value;
-                            var proteinesNouv = document.getElementById('inputProteines').value;
-                            var selNouv = document.getElementById('inputSel').value;
-                            //Requête AJAX POST pour ajouter
-                            $.ajax({
-                                url:  URL_PREFIX + 'backend/aliments.php',
-                                method: "POST",
-                                dataType : "json",
-                                data: JSON.stringify({
-                                    nom: nomNouv, 
-                                    id_type_aliment: typeNouv, 
-                                    calories: caloriesNouv, 
-                                    glucides: glucidesNouv, 
-                                    sucres: sucresNouv, 
-                                    lipides: lipidesNouv, 
-                                    acides_gras: acidesGrasNouv, 
-                                    proteines: proteinesNouv, 
-                                    sel: selNouv
-                                })
-                            })
-                            //Ce code sera exécuté en cas de succès - La réponse du serveur est passée à done()
-                            .done(function(response){
-                                let res = JSON.stringify(response);
-                                var idNouv = response['data']['id_aliment'];
-                                document.getElementById("alimentsForm").reset();
-                                $('#alimentsTable').DataTable().ajax.reload();
+                                alert("Merci, vos informations ont bien été mises à jour.")
                             })
                             //Ce code sera exécuté en cas d'échec - L'erreur est passée à fail()
                             .fail(function(error){
